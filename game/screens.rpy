@@ -319,15 +319,21 @@ screen minigame(title, question, options, correct_idx, subject, ct_reward=8, gra
                 text question size 30 color "#c9d1d9"
 
             ## Answer buttons
+            $ __minigame_correct = correct_idx
             for idx in range(len(options)):
-                $ opt = options[idx]
-                $ is_correct = (idx == correct_idx)
-                textbutton opt:
+                python:
+                    _opt = options[idx]
+                    _is_correct = (idx == __minigame_correct)
+                    if _is_correct:
+                        _jump = Jump(correct_label)
+                    else:
+                        _jump = Jump(wrong_label)
+                textbutton _opt:
                     action [
-                        Function(ct_change, ct_reward if is_correct else -5),
-                        Function(grade_change, subject, grade_reward if is_correct else -5),
+                        Function(ct_change, ct_reward if _is_correct else -5),
+                        Function(grade_change, subject, grade_reward if _is_correct else -5),
                         Hide("minigame"),
-                        Jump(correct_label) if is_correct else Jump(wrong_label)
+                        _jump
                     ]
                     xfill True
                     ysize 80
