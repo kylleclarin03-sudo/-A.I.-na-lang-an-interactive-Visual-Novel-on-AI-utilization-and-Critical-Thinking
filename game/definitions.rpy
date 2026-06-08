@@ -77,7 +77,7 @@ init python:
             return "ending_good_solid"
         return "ending_bad"
 
-# ── CHARACTER DEFINITIONS ─────────────────────────────────────────────────────
+# ── CHARACTER DEFINITIONS ────────────────────────────────────────────────────
 
 define mc_m = Character("[player_name]",
     color="#79c0ff", what_color="#e6edf3",
@@ -130,7 +130,7 @@ define groupchat = Character("GROUP CHAT",
     color="#8b949e", what_color="#c9d1d9",
     what_italic=True, window_background=Solid("#21262DCC"))
 
-# ── IMAGE DECLARATIONS ────────────────────────────────────────────────────────
+# ── IMAGE DECLARATIONS ───────────────────────────────────────────────────────
 
 ## Sprites, students (normal / happy / stressed)
 image alex normal    = "images/sprites/alex_normal.webp"
@@ -175,39 +175,33 @@ image bg_lab       = "images/backgrounds/bg_lab.webp"
 image bg_campus    = "images/backgrounds/bg_campus.webp"
 
 ## Dynamic MC sprite (resolves male or female based on player_gender)
-image mc normal:
-    if player_gender == "male":
-        "images/sprites/alex_normal.webp"
-    else:
-        "images/sprites/alexa_normal.webp"
+image mc normal = ConditionSwitch(
+    "player_gender == 'male'", "images/sprites/alex_normal.webp",
+    "True", "images/sprites/alexa_normal.webp"
+)
 
-image mc happy:
-    if player_gender == "male":
-        "images/sprites/alex_happy.webp"
-    else:
-        "images/sprites/alexa_happy.webp"
+image mc happy = ConditionSwitch(
+    "player_gender == 'male'", "images/sprites/alex_happy.webp",
+    "True", "images/sprites/alexa_happy.webp"
+)
 
-image mc stressed:
-    if player_gender == "male":
-        "images/sprites/alex_stressed.webp"
-    else:
-        "images/sprites/alexa_stressed.webp"
+image mc stressed = ConditionSwitch(
+    "player_gender == 'male'", "images/sprites/alex_stressed.webp",
+    "True", "images/sprites/alexa_stressed.webp"
+)
 
 ## Dynamic best friend sprite
-image bestfriend normal:
-    if player_bestfriend == "carl":
-        "images/sprites/carl_normal.webp"
-    else:
-        "images/sprites/carly_normal.webp"
+image bestfriend normal = ConditionSwitch(
+    "player_bestfriend == 'carl'", "images/sprites/carl_normal.webp",
+    "True", "images/sprites/carly_normal.webp"
+)
 
-image bestfriend happy:
-    if player_bestfriend == "carl":
-        "images/sprites/carl_happy.webp"
-    else:
-        "images/sprites/carly_happy.webp"
+image bestfriend happy = ConditionSwitch(
+    "player_bestfriend == 'carl'", "images/sprites/carl_happy.webp",
+    "True", "images/sprites/carly_happy.webp"
+)
 
-image bestfriend stressed:
-    if player_bestfriend == "carl":
-        "images/sprites/carl_stressed.webp"
-    else:
-        "images/sprites/carly_stressed.webp"
+image bestfriend stressed = ConditionSwitch(
+    "player_bestfriend == 'carl'", "images/sprites/carl_stressed.webp",
+    "True", "images/sprites/carly_stressed.webp"
+)

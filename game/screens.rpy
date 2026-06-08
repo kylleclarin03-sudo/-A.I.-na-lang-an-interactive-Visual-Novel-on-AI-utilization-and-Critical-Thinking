@@ -17,9 +17,9 @@ screen hud():
         background Solid("#0d1117E0")
         hbox:
             xfill True
-            xpadding 30
             yalign 0.5
             spacing 40
+            xmargin 30
 
             ## Day / Time label
             vbox:
@@ -303,9 +303,10 @@ screen minigame(title, question, options, correct_idx, subject, ct_reward=8, gra
                 xfill True
                 ysize 60
                 background Solid("#161b22")
+                padding (16, 0)
                 hbox:
-                    xpadding 16
                     yalign 0.5
+                    spacing 30
                     text title size 30 color "#58a6ff"
                     null width 30
                     text "CT: [critical_thinking] / 100" size 26 color "#8b949e" yalign 0.5

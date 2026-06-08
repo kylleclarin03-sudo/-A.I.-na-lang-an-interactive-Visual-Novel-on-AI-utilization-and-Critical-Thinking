@@ -6,7 +6,7 @@ define config.version = "1.0.0"
 define config.window_title = "A.I. na lang!, A Visual Novel"
 
 ## 1920x1080 canonical authoring resolution.
-define gui.init(1920, 1080)
+define gui.init = (1920, 1080)
 
 define config.has_music = True
 define config.has_sound = True
