@@ -55,7 +55,7 @@ jobs:
         run: |
           set -e
           echo "Building web distribution using Ren'Py's bundled Python (renpy.sh)..."
-          ~/renpy-sdk/renpy.sh . web
+          ~/renpy-sdk/renpy.sh . compile --web
           echo "Checking build output..."
           ls -la
           # The web build creates a directory named <project>-web
