@@ -39,6 +39,7 @@ jobs:
           mkdir -p ~/renpy-sdk
           tar -xjf /tmp/renpy.tar.bz2 -C ~/renpy-sdk --strip-components=1
           rm /tmp/renpy.tar.bz2
+          chmod +x ~/renpy-sdk/renpy.sh
           echo "Ren'Py SDK ready at ~/renpy-sdk/"
 
       - name: Install Ren'Py dependencies
@@ -46,17 +47,21 @@ jobs:
           set -e
           echo "Installing system dependencies for Ren'Py..."
           sudo apt-get update
-          sudo apt-get install -y libsdl2-2.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-ttf-2.0-0
+          sudo apt-get install -y \
+            build-essential \
+            python3-dev \
+            libsdl2-2.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-ttf-2.0-0 \
+            libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
           echo "Installing Python dependencies..."
-          python3 -m pip install --upgrade pip
-          python3 -m pip install future
-          echo "Running Ren'Py bootstrap to build pygame_sdl2..."
-          python3 ~/renpy-sdk/renpy.py ~/renpy-sdk bootstrap
+          python3 -m pip install --upgrade pip setuptools cython future
           echo "Ren'Py dependencies installed"
 
       - name: Build web distribution
         run: |
           set -e
+          echo "Running Ren'Py bootstrap (builds pygame_sdl2 for system Python)..."
+          python3 ~/renpy-sdk/renpy.py ~/renpy-sdk bootstrap
+          echo "Building web distribution..."
           python3 ~/renpy-sdk/renpy.py . web_build
           echo "Checking build output..."
           ls -la web_build/ 2>/dev/null || echo "No web_build dir"
