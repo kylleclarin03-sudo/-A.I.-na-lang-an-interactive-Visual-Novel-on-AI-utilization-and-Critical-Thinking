@@ -175,33 +175,31 @@ image bg_lab       = "images/backgrounds/bg_lab.webp"
 image bg_campus    = "images/backgrounds/bg_campus.webp"
 
 ## Dynamic MC sprite (resolves male or female based on player_gender)
-image mc normal = ConditionSwitch(
-    "player_gender == 'male'", "images/sprites/alex_normal.webp",
-    "True", "images/sprites/alexa_normal.webp"
-)
-
-image mc happy = ConditionSwitch(
-    "player_gender == 'male'", "images/sprites/alex_happy.webp",
-    "True", "images/sprites/alexa_happy.webp"
-)
-
-image mc stressed = ConditionSwitch(
-    "player_gender == 'male'", "images/sprites/alex_stressed.webp",
-    "True", "images/sprites/alexa_stressed.webp"
-)
-
-## Dynamic best friend sprite
-image bestfriend normal = ConditionSwitch(
-    "player_bestfriend == 'carl'", "images/sprites/carl_normal.webp",
-    "True", "images/sprites/carly_normal.webp"
-)
-
-image bestfriend happy = ConditionSwitch(
-    "player_bestfriend == 'carl'", "images/sprites/carl_happy.webp",
-    "True", "images/sprites/carly_happy.webp"
-)
-
-image bestfriend stressed = ConditionSwitch(
-    "player_bestfriend == 'carl'", "images/sprites/carl_stressed.webp",
-    "True", "images/sprites/carly_stressed.webp"
-)
+## Dynamic best friend sprite (resolves Carl or Carly based on player_bestfriend)
+## Using renpy.image() in an init python block to avoid ATL parser confusion
+## with multi-line ConditionSwitch indentation.
+init python:
+    renpy.image("mc normal", ConditionSwitch(
+        "player_gender == 'male'", "images/sprites/alex_normal.webp",
+        "True", "images/sprites/alexa_normal.webp"
+    ))
+    renpy.image("mc happy", ConditionSwitch(
+        "player_gender == 'male'", "images/sprites/alex_happy.webp",
+        "True", "images/sprites/alexa_happy.webp"
+    ))
+    renpy.image("mc stressed", ConditionSwitch(
+        "player_gender == 'male'", "images/sprites/alex_stressed.webp",
+        "True", "images/sprites/alexa_stressed.webp"
+    ))
+    renpy.image("bestfriend normal", ConditionSwitch(
+        "player_bestfriend == 'carl'", "images/sprites/carl_normal.webp",
+        "True", "images/sprites/carly_normal.webp"
+    ))
+    renpy.image("bestfriend happy", ConditionSwitch(
+        "player_bestfriend == 'carl'", "images/sprites/carl_happy.webp",
+        "True", "images/sprites/carly_happy.webp"
+    ))
+    renpy.image("bestfriend stressed", ConditionSwitch(
+        "player_bestfriend == 'carl'", "images/sprites/carl_stressed.webp",
+        "True", "images/sprites/carly_stressed.webp"
+    ))
