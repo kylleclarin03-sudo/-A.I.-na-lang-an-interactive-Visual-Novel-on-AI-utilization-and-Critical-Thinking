@@ -7,7 +7,7 @@ label ending_sequence:
     jump expression ending_target
 
 # ══════════════════════════════════════════════════════════════════════════════
-# ENDING 1: SPECIAL GOOD — "The Real Deal"
+# ENDING 1: SPECIAL GOOD, "The Real Deal"
 # Condition: All ≥ 85, ai_use_count == 0, CT ≥ 75
 # ══════════════════════════════════════════════════════════════════════════════
 label ending_special_good:
@@ -19,15 +19,25 @@ label ending_special_good:
     scene bg_classroom with dissolve
 
     show ms_iva happy at left with dissolve
-    ms_iva "Gusto kong ipakita sa klase ang isang bagay ngayon. Ang essay na ito tungkol sa cognitive debt."
-    ms_iva "Ito ang hitsura ng tunay na pag-unawa. Hindi perpekto. Pero totoo. At may lakas — lakas na galing sa sariling pag-iisip."
-    narrator "(Nakilala mo ang pangalan mo sa board. Hindi ka makapaniwala.)"
-    narrator "(Tumingin ka sa papel. Binasa mo ang sarili mong mga salita. Iyong talaga.)"
+    ms_iva "Gusto kong ipakita sa klase ang isang bagay ngayon."
+    narrator "(Binuhat niya ang isang papel mula sa kanyang mesa. Hindi mo ito inaasahan.)"
+    ms_iva "Ang essay na ito tungkol sa cognitive debt. Binasa ko ito nang tatlong beses. Hindi dahil may mali, kundi dahil sa unang pagkakataon ngayong semester, may isang estudyante na hindi sumulat para sa grado."
+    ms_iva "Sumulat siya dahil totoong may natutunan siya."
+    narrator "(Naramdaman mo ang biglaang init sa iyong dibdib.)"
+    ms_iva "May mga bahagi na hindi perpekto ang grammar. May isang transition na awkward. Pero alam mo kung ano ang naroon?"
+    narrator "(Tumigil siya. Tumingin sa iyo nang diretso.)"
+    ms_iva "Ang tunay na pag-unawa. Hindi perpekto. Pero totoo. At may lakas, may dating, na hindi kayang gayahin ng kahit anong language model."
+    ms_iva "Ito ang tunay na estudyanteng na hindi kumuha ng shortcut. Hindi dahil bawal. Kundi dahil pinili niyang matuto."
+    narrator "(Tahimik ang buong klase. Ilang segundo. Pakiramdam, mas matagal.)"
+    ms_iva "Ipinagmamalaki ko kayo. And I'm sure kilala nyo na kung sino kayo :3."
+    narrator "(Nakilala mo ang mga pangalan sa board. Hindi ka makapaniwala.)"
+    narrator "(Tumingin ka sa papel. Binasa mo ang sarili mong mga salita.)"
+    narrator "(At sa unang pagkakataon sa mahabang panahon, naniwala ka.)"
 
     if player_gender == "male":
-        mc_m "(Sa loob mo) Hindi ito yung papel na gustong isulat ng 'dating' na ako. Pero pinaka-totoo ito sa lahat ng aking sinulat."
+        mc_m "Hindi ito yung papel na gustong isulat ng 'dating' na ako. Pero pinaka-totoo ito sa lahat ng aking sinulat."
     else:
-        mc_f "(Sa loob mo) Ito ang pinaka-totoo na sinulat ko. Walang AI na nag-generate nito. Bawat salita — galing sa akin."
+        mc_f "Ito ang pinaka-totoo na sinulat ko. Walang AI na nag-generate nito. Bawat salita, galing sa akin."
 
     hide ms_iva with dissolve
 
@@ -39,7 +49,7 @@ label ending_special_good:
     show kent happy at center with dissolve
     show rey normal at right with dissolve
 
-    narrator "(Grupo sa canteen. Extra rice para kay Carl. Tahimik na masaya si Kent. Si Gabby — nagnanakaw ng notes mo para sa susunod na semester.)"
+    narrator "(Grupo sa canteen. Extra rice para kay Carl. Tahimik na masaya si Kent. Si Gabby, nagnanakaw ng notes mo para sa susunod na semester.)"
     gabby "Pwede mo ba akong turuan? For real this time. 'Yung authentic na paraan."
     if player_gender == "male":
         mc_m "Oo. Pero i-review mo talaga. Sariling utak. Hindi AI."
@@ -48,7 +58,7 @@ label ending_special_good:
     gabby "Sige na, sige na!"
     kent "(bumubulong kay Rey) Miracle."
     rey "..."
-    narrator "(Tahimik si Rey. Pero alam mo na — iyon ang kanyang paraan ng pagsabi na proud siya.)"
+    narrator "(Tahimik si Rey. Pero alam mo na, iyon ang kanyang paraan ng pagsabi na proud siya.)"
 
     hide carl with dissolve
     hide gabby with dissolve
@@ -63,20 +73,20 @@ label ending_special_good:
     narrator "Hindi shortcut. Ang mahabang daan. Ang landas mo."
     pause 1.5
     narrator "Graduated with honors apat na semester pagkatapos."
-    narrator "Ang AI chat window — nakasara."
+    narrator "Ang AI chat window, nakasara."
     narrator "Hindi dahil ipinagbawal."
     narrator "Kundi dahil hindi mo na kailangan ito para mag-isip para sa iyo."
     pause 2.0
 
     scene black
-    narrator "✦ SPECIAL GOOD ENDING — 'The Real Deal' ✦"
+    narrator "✦ SPECIAL GOOD ENDING, 'The Real Deal' ✦"
     pause 1.5
     narrator "Networking: [letter_grade(networking_grade)] | Programming: [letter_grade(programming_grade)] | Cybersecurity: [letter_grade(cyber_grade)]"
     narrator "Critical Thinking: [critical_thinking] / 100 | AI Uses: [ai_use_count]"
     return
 
 # ══════════════════════════════════════════════════════════════════════════════
-# ENDING 2: GOOD WITH GUILT — "At What Cost?"
+# ENDING 2: GOOD WITH GUILT, "At What Cost?"
 # Condition: All ≥ 75, ai_use_count > 3, CT < 55
 # ══════════════════════════════════════════════════════════════════════════════
 label ending_good_guilt:
@@ -102,21 +112,21 @@ label ending_good_guilt:
     if player_gender == "male":
         mc_m "(Sa loob mo) Anong matututunan ko sa susunod na semester? Kung paano gumawa ng mas magandang prompt?"
     else:
-        mc_f "(Sa loob mo) Kung tatanungin ako bukas kung ano ang pinag-aralan ko — anong sasabihin ko?"
+        mc_f "(Sa loob mo) Kung tatanungin ako bukas kung ano ang pinag-aralan ko, anong sasabihin ko?"
 
     hide carl with dissolve
     hide carly with dissolve
 
     scene black with dissolve
-    narrator "Nakapasa ka. Maayos pa nga."
+    narrator "Nakapasa ka."
     pause 1.2
-    narrator "Ang tanong ni Ms. Iva sa una — kailan nagiging crutch ang isang tool — hindi mo pa nasasagot."
+    narrator "Ang tanong ni Ms. Iva sa una, kailan nga ba nagiging crutch ang isang tool? Hanggang ngayon, hindi mo pa nasasagot."
     pause 1.0
-    narrator "Sa susunod na semester, hindi nawawala ang tanong. Mas mahirap lang pag-iwasan."
+    narrator "Sa susunod na semester, hindi nawawala ang tanong. Mas humihirap lang pag-isipan."
     pause 1.5
 
     scene black
-    narrator "✦ GOOD ENDING — 'At What Cost?' ✦"
+    narrator "✦ GOOD ENDING, 'But at What Cost?' ✦"
     pause 1.0
     narrator "Networking: [letter_grade(networking_grade)] | Programming: [letter_grade(programming_grade)] | Cybersecurity: [letter_grade(cyber_grade)]"
     narrator "Critical Thinking: [critical_thinking] / 100 | AI Uses: [ai_use_count]"
@@ -124,7 +134,7 @@ label ending_good_guilt:
     return
 
 # ══════════════════════════════════════════════════════════════════════════════
-# ENDING 3: GOOD SOLID — "Solid Enough"
+# ENDING 3: GOOD SOLID, "Solid Enough"
 # Condition: All ≥ 75, ai_use_count ≤ 1, CT ≥ 60
 # ══════════════════════════════════════════════════════════════════════════════
 label ending_good_solid:
@@ -136,17 +146,17 @@ label ending_good_solid:
     else:
         show carly happy at right with dissolve
 
-    narrator "(Nakalusot. Hindi lahat perpekto — may ilang grade na medyo mababa.)"
+    narrator "(Nakalusot. Hindi lahat perpekto, may ilang grade na medyo mababa.)"
     narrator "(Pero nakalusot. At alam mo kung saan nanggaling ang bawat puntos.)"
 
     show mr_kai happy at left with dissolve
-    mr_kai "Ang coding output mo — may ilang inefficiency, pero sarili mo ang logic. 'Yan ang pinakamahalaga."
+    mr_kai "Ang coding output mo, may ilang inefficiency, pero sarili mo ang logic. 'Yan ang pinakamahalaga."
     hide mr_kai with dissolve
 
     if player_gender == "male":
-        mc_m "Hindi perpekto ang grades ko. Pero 'yung linya na sinulat ko sa essay ni Ms. Iva — 'yun talaga galing sa akin."
+        mc_m "Hindi perpekto ang grades ko. Pero 'yung linya na sinulat ko sa essay ni Ms. Iva, 'yun talaga galing sa akin."
     else:
-        mc_f "Hindi perpekto ang lahat. Pero lahat ay earned. Lahat — sarili ko."
+        mc_f "Hindi perpekto ang lahat. Pero lahat ay earned. Lahat, sarili ko."
 
     hide carl with dissolve
     hide carly with dissolve
@@ -154,20 +164,20 @@ label ending_good_solid:
     scene black with dissolve
     narrator "Hindi perpekto. Pero earned."
     pause 1.0
-    narrator "Bawat grade na nakusurot ay paalala na nandoon ka — presente, nagsisikap, paminsan-minsang nagkamali sa paraan na nagtuturo ng isang bagay."
+    narrator "Bawat grade na nakusurot ay paalala na nandoon ka, presente, nagsisikap, paminsan-minsang nagkamali sa paraan na nagtuturo ng isang bagay."
     pause 1.5
     narrator "Kita kita sa susunod na semester."
     pause 2.0
 
     scene black
-    narrator "✦ GOOD ENDING — 'Solid Enough' ✦"
+    narrator "✦ GOOD ENDING, 'Solid Enough' ✦"
     pause 1.0
     narrator "Networking: [letter_grade(networking_grade)] | Programming: [letter_grade(programming_grade)] | Cybersecurity: [letter_grade(cyber_grade)]"
     narrator "Critical Thinking: [critical_thinking] / 100 | AI Uses: [ai_use_count]"
     return
 
 # ══════════════════════════════════════════════════════════════════════════════
-# ENDING 4: REDEMPTION — "Not Yet, But Getting There"
+# ENDING 4: REDEMPTION, "Not Yet, But Getting There"
 # Condition: Any INC, CT ≥ 45 and motivation ≥ 45
 # ══════════════════════════════════════════════════════════════════════════════
 label ending_redemption:
@@ -210,14 +220,14 @@ label ending_redemption:
 
     narrator "(Completion exam montage.)"
     narrator "(This time: notes by hand. No AI on the syntax drills.)"
-    narrator "(Si Kent, nagtu-tutor sa canteen. Si Rey, tahimik na nanonood — paminsan-minsang nagko-correct ng isang mali.)"
+    narrator "(Si Kent, nagtu-tutor sa canteen. Si Rey, tahimik na nanonood, paminsan-minsang nagko-correct ng isang mali.)"
     narrator "(Dumating ang araw ng completion exam.)"
     narrator "(Pumasok ka nang may kumpiyansa na hindi nanggaling sa shortcuts.)"
 
     scene black with dissolve
-    narrator "(Lumabas ang revised grade. INC — removed. Passing mark.)"
+    narrator "(Lumabas ang revised grade. INC, removed. Passing mark.)"
     pause 1.5
-    narrator "Mas matagal. Pero ngayon, kapag may nagtatanong tungkol sa VLAN configuration o Python scope errors o RA 10173—"
+    narrator "Mas matagal. Pero ngayon, kapag may nagtatanong tungkol sa VLAN configuration o Python scope errors o RA 10173,"
     pause 1.0
     narrator "alam mo na ang sagot."
     pause 1.0
@@ -225,14 +235,14 @@ label ending_redemption:
     pause 2.0
 
     scene black
-    narrator "✦ REDEMPTION ENDING — 'Not Yet, But Getting There' ✦"
+    narrator "✦ REDEMPTION ENDING, 'Not Yet, But Getting There' ✦"
     pause 1.0
     narrator "Critical Thinking: [critical_thinking] / 100 | Motivation: [motivation] / 100"
     narrator "(Nagsimula sa INC. Natapos nang wala. Ganoon ang redemption.)"
     return
 
 # ══════════════════════════════════════════════════════════════════════════════
-# ENDING 5: BAD — "Try Again Next Year"
+# ENDING 5: BAD, "Try Again Next Year"
 # Condition: Any INC, CT < 30, motivation < 30
 # ══════════════════════════════════════════════════════════════════════════════
 label ending_bad:
@@ -257,27 +267,27 @@ label ending_bad:
         mc_f "(Sa loob mo) Alam ko naman. Alam ko na habang ginagawa ko ang bawat shortcut. Alam ko."
 
     scene black with dissolve
-    narrator "\"Try again next year.\""
+    narrator "\"See you next year.\""
     pause 2.0
     narrator "Sapat na ang kinuha ng pandemic sa iyo."
     pause 1.0
-    narrator "Huwag hayaang ulitin ng ugali."
+    narrator "Huwag mong hayaang umulitin ang nangyari."
     pause 1.5
 
     scene black
-    narrator "✦ BAD ENDING — 'Try Again Next Year' ✦"
+    narrator "✦ BAD ENDING, 'See you Next Year' ✦"
     pause 1.0
     narrator "Critical Thinking: [critical_thinking] / 100 | AI Uses: [ai_use_count]"
 
     menu:
-        "Subukan ulit. (Bumalik sa Chapter 5 na pagpipilian)":
+        "Try again (Go back to Chapter 5, make different choices to avoid INCs)":
             jump chapter5
-        "Tapusin ang laro.":
+        "Finish the game. (Accept this ending)":
             return
     return
 
 # ══════════════════════════════════════════════════════════════════════════════
-# ENDING 6: CAUGHT — "Academic Integrity Issue"
+# ENDING 6: CAUGHT, "Academic Integrity Issue"
 # Condition: got_caught == True and player lied to Ms. Iva
 # ══════════════════════════════════════════════════════════════════════════════
 label ending_caught:
@@ -285,16 +295,15 @@ label ending_caught:
     scene bg_classroom with dissolve
 
     show ms_iva disappointed at center with dissolve
-    ms_iva "Ang academic integrity ay hindi lang isang patakaran. Ito ay isang kasunduan — sa institusyon, sa iyong mga kaklase, at sa iyong sarili."
-    ms_iva "Binigyan kita ng pagkakataon na maging tapat. Pinili mong hindi."
-    ms_iva "Ang grade ay sumasalamin sa submission, hindi sa taong inaasahan kong ikaw."
+    ms_iva "Ang academic integrity ay hindi lang isang patakaran. Ito ay isang kasunduan, sa institusyon, sa iyong mga kaklase, at sa iyong sarili."
+    ms_iva "Binigyan kita ng pagkakataon na maging tapat. Pero pinili mong hindi eh."
     hide ms_iva with dissolve
 
     scene bg_hallway with dissolve
-    narrator "(Mas matagal ang pakiramdam ng hallway habang lumalabas ka.)"
+    narrator "(Mas mabigat ang pakiramdam ng hallway habang lumalabas ka.)"
     narrator "(Hindi nagtatanong si Carl. Alam na niya kung may nangyari.)"
-    narrator "(Mabilis lumayo si Gabby. Si Kent — tinitingnan ka, pero hindi nagsasalita.)"
-    narrator "(Si Rey — lumakad nang walang kibo.)"
+    narrator "(Mabilis lumayo si Gabby. Si Kent, tinitingnan ka, pero hindi nagsasalita.)"
+    narrator "(Si Rey, lumakad palayo nang walang kibo.)"
 
     if player_gender == "male":
         mc_m "(Sa loob mo) Hindi naman kita nalinlang, Ms. Iva. Niloko ko lang sarili ko."
@@ -306,17 +315,17 @@ label ending_caught:
     pause 1.5
     narrator "Mayroon ka na palaging sagot."
     pause 1.0
-    narrator "Ang problema — hindi mo ito inamin sa tamang oras."
+    narrator "Ang problema, hindi mo ito inamin sa tamang oras."
     pause 2.0
 
     scene black
-    narrator "✦ CAUGHT ENDING — 'Academic Integrity Issue' ✦"
+    narrator "✦ CAUGHT ENDING, 'Academic Integrity Issue' ✦"
     pause 1.0
     narrator "got_caught: True | Critical Thinking: [critical_thinking] / 100"
 
     menu:
-        "Subukan ulit. (Bumalik sa Chapter 6 — sagutin nang tapat si Ms. Iva)":
+        "Try again. (Return to Chapter 6, sagutin nang tapat si Ms. Iva)":
             jump chapter6
-        "Tapusin ang laro.":
+        "Finish the game. (Accept the ending)":
             return
     return

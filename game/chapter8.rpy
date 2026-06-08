@@ -1,16 +1,16 @@
 ## game/chapter8.rpy
-## Chapter 8 — "Finals" (Week 8 — Grand Finale)
+## Chapter 8, "Finals" (Week 8, Grand Finale)
 
 label chapter8:
-    call screen chapter_title("8", "Finals", "Week 8 — 'Ito na. Walang balik.'")
-    $ day_label = "Week 8 — Finals Day"
+    call screen chapter_title("8", "Finals", "Week 8, 'Ito na. Walang balik.'")
+    $ day_label = "Week 8, Finals Day"
     $ current_week = 8
 
-    ## ── SCENE 8-1: Morning of finals — Carl/Carly with coffee at the gate ───
+    ## ── SCENE 8-1: Morning of finals, Carl/Carly with coffee at the gate ───
     scene bg_campus with dissolve
     $ safe_play("music", "audio/bgm/bgm_finals.ogg", loop=True)
 
-    narrator "(Alas siyete ng umaga. Ang campus ay maliwanag at maingay — lahat ay may dala-dalang reviewer, may pantalon na halos hindi natulog, may kape.)"
+    narrator "(Alas siyete ng umaga. Ang campus ay maliwanag at maingay, lahat ay may dala-dalang reviewer, may pantalon na halos hindi natulog, may kape.)"
 
     if player_bestfriend == "carl":
         show carl happy at center with dissolve
@@ -19,7 +19,7 @@ label chapter8:
             mc_m "Nagbago na 'ko. Maaga na 'ko ngayon."
         else:
             mc_f "Maaga na 'ko ngayon. Bago na akong tao."
-        carl "Haha! Here — kape. Walang tulog kaya ito ang fuel."
+        carl "Haha! Here, kape. Walang tulog kaya ito ang fuel."
         if player_gender == "male":
             mc_m "(Tinanggap mo ang kape. Mainit. Tama.)"
         else:
@@ -31,7 +31,7 @@ label chapter8:
             mc_m "Oo, nagbago na 'ko. Sineseryoso ko na ito."
         else:
             mc_f "Oo. Sineseryoso ko na. Huli na para mag-back down."
-        carly "Heto — dalawa kang kape. Isa para ngayon, isa para in between exams."
+        carly "Heto, dalawa kang kape. Isa para ngayon, isa para in between exams."
         if player_gender == "male":
             mc_m "(Tumawa ka. Ang kape ay mainit at tama.)"
         else:
@@ -49,20 +49,20 @@ label chapter8:
     hide kent with dissolve
     hide rey with dissolve
 
-    ## ── SCENE 8-2: Finals Exam 1 — Networking (Mr. Earns) ───────────────────
+    ## ── SCENE 8-2: Finals Exam 1, Networking (Mr. Earns) ───────────────────
     scene bg_classroom with dissolve
     $ safe_play("music", "audio/bgm/bgm_tension.ogg", loop=True)
-    $ day_label = "Week 8 — Networking Finals"
+    $ day_label = "Week 8, Networking Finals"
 
     show mr_earns normal at center with dissolve
     mr_earns "Magsimula na. Dalawang oras. Walang phone. Walang kahit ano."
-    narrator "(Binaliktad mo ang papel. Ang unang tanong — subnetting. Alam mo ito.)"
+    narrator "(Binaliktad mo ang papel. Ang unang tanong, subnetting. Alam mo ito.)"
     narrator "(Hindi dahil kinopya mo mula sa AI. Kundi dahil ginawa mo sa sarili mo, nang paulit-ulit, hanggang sumama sa iyo.)"
     hide mr_earns with dissolve
 
     ## Networking Finals Minigame
     show screen minigame(
-        "Networking Finals — Routing Protocol",
+        "Networking Finals, Routing Protocol",
         "Alin sa mga sumusunod ang tamang katangian ng OSPF kumpara sa RIP?",
         [
             "A. Gumagamit ng hop count bilang metric; maximum 15 hops",
@@ -78,22 +78,22 @@ label chapter8:
 
     scene bg_hallway with dissolve
     narrator "(Natapos ang Networking exam. Lumabas ka nang tahimik. Hindi ka nagre-react.)"
-    narrator "(Sa loob mo lang — 'Kaya ko 'yun.')"
+    narrator "(Sa loob mo lang, 'Kaya ko 'yun.')"
 
-    ## ── SCENE 8-3: Finals Exam 2 — Programming (Mr. Kai) ────────────────────
+    ## ── SCENE 8-3: Finals Exam 2, Programming (Mr. Kai) ────────────────────
     scene bg_lab with dissolve
     $ safe_play("music", "audio/bgm/bgm_tension.ogg", loop=True)
-    $ day_label = "Week 8 — Programming Finals"
+    $ day_label = "Week 8, Programming Finals"
 
     show mr_kai normal at center with dissolve
-    mr_kai "Okay! Finals na. May coding output kayo — i-type ninyo ang inyong solusyon sa editor. Walang AI tools open. Siniseryoso ko ito."
-    mr_kai "At para sa lahat — ang code na masyadong perpekto para sa lalim ng topic ay mapapansin ko."
+    mr_kai "Okay! Finals na. May coding output kayo, i-type ninyo ang inyong solusyon sa editor. Walang AI tools open. Siniseryoso ko ito."
+    mr_kai "At para sa lahat, ang code na masyadong perpekto para sa lalim ng topic ay mapapansin ko."
     mr_kai "Good luck. Kaya ninyo."
     hide mr_kai with dissolve
 
     ## Programming Finals Minigame
     show screen minigame(
-        "Programming Finals — Python Functions",
+        "Programming Finals, Python Functions",
         "Ano ang output ng sumusunod na Python code?\n\ndef square(n):\n    return n * n\n\nresult = square(4) + square(3)\nprint(result)",
         [
             "A. 49",
@@ -108,24 +108,24 @@ label chapter8:
     )
 
     scene bg_hallway with dissolve
-    narrator "(Programming exam — tapos. Ang code mo ay hindi perpekto. May isang function na medyo awkward.)"
-    narrator "(Pero ikaw ang nag-isip nito. Bawat linya — ikaw.)"
+    narrator "(Programming exam, tapos. Ang code mo ay hindi perpekto. May isang function na medyo awkward.)"
+    narrator "(Pero ikaw ang nag-isip nito. Bawat linya, ikaw.)"
 
-    ## ── SCENE 8-4: Finals Exam 3 — Cybersecurity (Ms. Iva) ─────────────────
+    ## ── SCENE 8-4: Finals Exam 3, Cybersecurity (Ms. Iva) ─────────────────
     scene bg_classroom with dissolve
     $ safe_play("music", "audio/bgm/bgm_tension.ogg", loop=True)
-    $ day_label = "Week 8 — Cybersecurity Finals"
+    $ day_label = "Week 8, Cybersecurity Finals"
 
     show ms_iva normal at center with dissolve
     ms_iva "Ang huling exam. May MCQ portion at may essay."
     ms_iva "Ang essay prompt, tandaan ninyo: ipaliwanag ang cognitive debt sa konteksto ng AI use sa edukasyon. At isang hakbang para gamitin ang AI nang etikal."
-    ms_iva "Actual citations kung may ci-cite — verified mula sa tunay na batas. Wala akong tinatanggap na AI-generated references."
+    ms_iva "Actual citations kung may ci-cite, verified mula sa tunay na batas. Wala akong tinatanggap na AI-generated references."
     ms_iva "(huminto) Kaya ninyo."
     hide ms_iva with dissolve
 
     ## Cybersecurity Finals Minigame
     show screen minigame(
-        "Cybersecurity Finals — RA 10175",
+        "Cybersecurity Finals, RA 10175",
         "Sa ilalim ng RA 10175 (Cybercrime Prevention Act of 2012), alin ang nakalista bilang cybercrime offense?",
         [
             "A. Paggamit ng social media para mag-post ng personal na larawan",
@@ -151,16 +151,16 @@ label chapter8:
         mc_f "(Sa isip mo) Hindi ko ito maisusulat para sa grado. Isusulat ko ito dahil totoo ito.)"
 
     narrator "(Simula ka ng magsulat. Hindi mabilis. Hindi perpekto. Pero bawat salita ay iyong sarili.)"
-    narrator "(RA 10173 — Section 3, ang kahulugan ng personal information. Tama ang section number. Bina-verify mo.)"
+    narrator "(RA 10173, Section 3, ang kahulugan ng personal information. Tama ang section number. Bina-verify mo.)"
     narrator "(Natapos ka. Hindi ka siguradong mataas ang grado. Pero sigurado kang totoo ang sinulat mo.)"
     $ grade_change("cyber", 12)
 
     ## ── SCENE 8-5: After last exam ───────────────────────────────────────────
     scene bg_campus with dissolve
     $ safe_play("music", "audio/bgm/bgm_campus.ogg", loop=True)
-    $ day_label = "Week 8 — Pagkatapos ng Finals"
+    $ day_label = "Week 8, Pagkatapos ng Finals"
 
-    narrator "(Hapon na. Ang campus ay maliwanag at maingay — ngayon, iba ang ingay. Mas magaan.)"
+    narrator "(Hapon na. Ang campus ay maliwanag at maingay, ngayon, iba ang ingay. Mas magaan.)"
     narrator "(Nakarating kayo sa canteen entrance. Lahat ng grupo.)"
 
     show gabby happy at right with dissolve
@@ -168,13 +168,13 @@ label chapter8:
     show rey normal at center with dissolve
 
     gabby "TAPOS NA! LAHAT TAPOS NA! PAGKAIN TAYO!"
-    kent "Technically, may grade pa lang kailangang lumabas—"
+    kent "Technically, may grade pa lang kailangang lumabas,"
     gabby "KENT."
     kent "...Okay. Pagkain tayo."
     rey "..."
     narrator "(Tumingin ka kay Rey.)"
     rey "Maayos."
-    narrator "(Dalawang salita. Mula kay Rey — iyon ang sapat na.)"
+    narrator "(Dalawang salita. Mula kay Rey, iyon ang sapat na.)"
 
     if player_bestfriend == "carl":
         show carl happy at center with dissolve
@@ -201,8 +201,8 @@ label chapter8:
 
     scene black with dissolve
     narrator "(Ilang linggo pagkatapos, lalabas ang mga grades.)"
-    narrator "(Ngayon — kumain muna kayo. Grupo. Maingay. Buhay.)"
-    narrator "(At ikaw — nandoon ka. Presente. Tunay.)"
+    narrator "(Ngayon, kumain muna kayo. Grupo. Maingay. Buhay.)"
+    narrator "(At ikaw, nandoon ka. Presente. Tunay.)"
 
     ## Trigger ending calculation
     return

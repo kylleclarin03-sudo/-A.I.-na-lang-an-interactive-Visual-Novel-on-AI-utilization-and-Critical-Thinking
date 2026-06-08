@@ -10,10 +10,10 @@ default cyber_grade          = 65
 default ai_use_count         = 0    # Times player chose "Ask AI" during minigames.
 default got_caught           = False  # True if Ms. Iva catches hallucinated citation.
 default player_gender        = "male"   # Set in prologue character selection.
-default player_bestfriend    = "carl"   # "carl" or "carly" — set in prologue.
+default player_bestfriend    = "carl"   # "carl" or "carly", set in prologue.
 default player_name          = "Alex"   # Overwritten by name input in prologue.
 default current_week         = 1        # Narrative week tracker (1–8).
-default day_label            = "Day 1 — Umaga"
+default day_label            = "Day 1, Umaga"
 
 # ── HELPER FUNCTIONS ─────────────────────────────────────────────────────────
 init python:
@@ -132,7 +132,7 @@ define groupchat = Character("GROUP CHAT",
 
 # ── IMAGE DECLARATIONS ────────────────────────────────────────────────────────
 
-## Sprites — students (normal / happy / stressed)
+## Sprites, students (normal / happy / stressed)
 image alex normal    = "images/sprites/alex_normal.webp"
 image alex happy     = "images/sprites/alex_happy.webp"
 image alex stressed  = "images/sprites/alex_stressed.webp"
@@ -155,7 +155,7 @@ image rey normal     = "images/sprites/rey_normal.webp"
 image rey happy      = "images/sprites/rey_happy.webp"
 image rey stressed   = "images/sprites/rey_stressed.webp"
 
-## Sprites — professors (normal / thinking / disappointed)
+## Sprites, professors (normal / thinking / disappointed)
 image mr_earns normal       = "images/sprites/mr_earns_normal.webp"
 image mr_earns thinking     = "images/sprites/mr_earns_thinking.webp"
 image mr_earns disappointed = "images/sprites/mr_earns_disappointed.webp"

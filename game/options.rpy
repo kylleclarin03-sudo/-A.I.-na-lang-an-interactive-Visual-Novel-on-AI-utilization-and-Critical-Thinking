@@ -3,7 +3,7 @@
 
 define config.name = _("A.I. na lang!")
 define config.version = "1.0.0"
-define config.window_title = "A.I. na lang! — A Visual Novel"
+define config.window_title = "A.I. na lang!, A Visual Novel"
 
 ## 1920x1080 canonical authoring resolution.
 define gui.init(1920, 1080)
@@ -16,7 +16,7 @@ define config.main_menu_music = "audio/bgm/bgm_menu.ogg"
 ## Persistent saves survive cache clears on IndexedDB (web).
 define config.save_directory = "ai_na_lang-1.0.0"
 
-## Taglish — no separate translation layer needed.
+## Taglish, no separate translation layer needed.
 define config.language = None
 
 ## Hide developer console in production.
@@ -29,7 +29,7 @@ define config.exit_transition  = dissolve
 define config.window = "auto"
 
 init python:
-    ## Safe music play helper — silently skips if file is missing.
+    ## Safe music play helper, silently skips if file is missing.
     def safe_play(channel, filename, loop=True):
         import os
         path = os.path.join(config.gamedir, filename)

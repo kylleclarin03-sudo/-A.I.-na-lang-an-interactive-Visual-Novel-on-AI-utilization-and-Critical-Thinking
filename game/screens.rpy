@@ -2,7 +2,7 @@
 ## All screen definitions for A.I. na lang!
 
 ################################################################################
-## HUD — Persistent top bar shown during gameplay
+## HUD, Persistent top bar shown during gameplay
 ################################################################################
 screen hud():
     zorder 5
@@ -35,7 +35,7 @@ screen hud():
                     text "P:[letter_grade(programming_grade)]" size 26 color "#ff7b72"
                     text "C:[letter_grade(cyber_grade)]"       size 26 color "#56d364"
 
-            ## Critical Thinking Meter — segmented color zones
+            ## Critical Thinking Meter, segmented color zones
             vbox:
                 yalign 0.5
                 xminimum 500
@@ -60,7 +60,7 @@ screen hud():
                             ysize 18
                             background Solid(seg_color)
 
-            ## Motivation — heart icon + bar
+            ## Motivation, heart icon + bar
             vbox:
                 yalign 0.5
                 xminimum 220
@@ -81,7 +81,7 @@ init python:
     config.overlay_screens.append("hud")
 
 ################################################################################
-## QUICK MENU — Bottom navigation bar
+## QUICK MENU, Bottom navigation bar
 ################################################################################
 screen quick_menu():
     zorder 100
@@ -156,7 +156,7 @@ style qbtn_button_text:
     hover_color "#ffffff"
 
 ################################################################################
-## PHONE AI OVERLAY — "Browse Social Media" / Ask AI mini-popup
+## PHONE AI OVERLAY, "Browse Social Media" / Ask AI mini-popup
 ################################################################################
 init python:
     def show_phone_ai():
@@ -229,7 +229,7 @@ screen main_menu():
         textbutton _("Mga Setting")  action ShowMenu("preferences")
         textbutton _("Credits")      action ShowMenu("about")
 
-        ## Hide Quit on web — browsers block tab-close via JS.
+        ## Hide Quit on web, browsers block tab-close via JS.
         if not renpy.variant("web"):
             textbutton _("Umalis") action Quit(confirm=not main_menu)
 
@@ -281,9 +281,9 @@ screen chapter_title(chapter_num, chapter_name, subtitle):
         background None
 
 ################################################################################
-## MINIGAME SCREEN — Used for all three subject minigames
+## MINIGAME SCREEN, Used for all three subject minigames
 ################################################################################
-screen minigame(title, question, options, correct_idx, subject, ct_reward=8, grade_reward=10):
+screen minigame(title, question, options, correct_idx, subject, ct_reward=8, grade_reward=10, correct_label="minigame_correct", wrong_label="minigame_wrong"):
     modal True
     zorder 180
 
@@ -326,7 +326,7 @@ screen minigame(title, question, options, correct_idx, subject, ct_reward=8, gra
                         Function(ct_change, ct_reward if is_correct else -5),
                         Function(grade_change, subject, grade_reward if is_correct else -5),
                         Hide("minigame"),
-                        Jump("minigame_correct") if is_correct else Jump("minigame_wrong")
+                        Jump(correct_label) if is_correct else Jump(wrong_label)
                     ]
                     xfill True
                     ysize 80

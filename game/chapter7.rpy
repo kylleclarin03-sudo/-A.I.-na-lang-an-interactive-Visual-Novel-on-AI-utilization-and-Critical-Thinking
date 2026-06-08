@@ -1,9 +1,9 @@
 ## game/chapter7.rpy
-## Chapter 7 — "Last Chance Na" (Week 7 — Finals Prep)
+## Chapter 7, "Last Chance Na" (Week 7, Finals Prep)
 
 label chapter7:
-    call screen chapter_title("7", "Last Chance Na", "Week 7 — 'Ito na 'yung laban.'")
-    $ day_label = "Week 7 — Sabado"
+    call screen chapter_title("7", "Last Chance Na", "Week 7, 'Ito na 'yung laban.'")
+    $ day_label = "Week 7, Sabado"
     $ current_week = 7
 
     ## ── SCENE 7-1: Study session in front of classroom ──────────────────────
@@ -26,30 +26,30 @@ label chapter7:
         show carly happy at right with dissolve
         carly "Nandito ka! Tara na, naghintay na kaming matagal."
 
-    narrator "(Pumunta kayo sa loob. Ang study room ay malinis, tahimik, walang distraksiyon — walang game console, walang ranked queue.)"
+    narrator "(Pumunta kayo sa loob. Ang study room ay malinis, tahimik, walang distraksiyon, walang game console, walang ranked queue.)"
 
     ## Study montage
     scene bg_classroom with dissolve
     $ safe_play("music", "audio/bgm/bgm_study.ogg", loop=True)
 
     narrator "(Nagsimula si Kent sa Networking. VLAN, subnetting, routing protocols.)"
-    narrator "(Hindi siya nagtuturo nang parang guro — nagtatanong siya. Binibigyan kayo ng pagkakataon na sumagot.)"
+    narrator "(Hindi siya nagtuturo nang parang guro, nagtatanong siya. Binibigyan kayo ng pagkakataon na sumagot.)"
 
     show kent normal at center with dissolve
     kent "Okay. Simpleng tanong. Ano ang pagkakaiba ng VLAN at physical LAN segment?"
-    narrator "(Nag-isip ka. Totoong nag-isip — hindi nag-phone, hindi nag-AI.)"
+    narrator "(Nag-isip ka. Totoong nag-isip, hindi nag-phone, hindi nag-AI.)"
 
     if player_gender == "male":
-        mc_m "Sa physical LAN, ang segmentasyon ay base sa hardware. Sa VLAN, logical — kahit nasa parehong switch, maaaring magkaibang broadcast domain."
+        mc_m "Sa physical LAN, ang segmentasyon ay base sa hardware. Sa VLAN, logical, kahit nasa parehong switch, maaaring magkaibang broadcast domain."
     else:
-        mc_f "Sa physical LAN, segmented by hardware. Sa VLAN, software-defined ang segmentation — kahit physically connected, logically separated ang broadcast domain."
+        mc_f "Sa physical LAN, segmented by hardware. Sa VLAN, software-defined ang segmentation, kahit physically connected, logically separated ang broadcast domain."
 
     show kent happy at center with dissolve
     kent "Tama. Exactly. Yan ang klase ng sagot na gusto ko."
 
     show rey normal at left with dissolve
     rey "..."
-    narrator "(Tiningnan ka ni Rey. May bahagyang ngiti — rare para sa kanya.)"
+    narrator "(Tiningnan ka ni Rey. May bahagyang ngiti, rare para sa kanya.)"
     rey "Hindi ka ganito dati. Sa lab activities noon."
     if player_gender == "male":
         mc_m "Tinatamad lang ako dati."
@@ -65,13 +65,13 @@ label chapter7:
 
     ## Gabby arrives late
     show gabby normal at right with dissolve
-    gabby "Uy! Nandito na! Sorry late, nalaro ko ng konti—"
+    gabby "Uy! Nandito na! Sorry late, nalaro ko ng konti,"
     kent "(bumabalik) Gabby. Sit down. Cybersecurity na tayo."
     gabby "(tahimik na umupo) Sige na, sige na."
 
-    ## ── SCENE 7-2: Evening — Programming review ──────────────────────────────
+    ## ── SCENE 7-2: Evening, Programming review ──────────────────────────────
     scene bg_canteen with dissolve
-    $ day_label = "Week 7 — Gabi"
+    $ day_label = "Week 7, Gabi"
     $ safe_play("music", "audio/bgm/bgm_canteen.ogg", loop=True)
 
     narrator "(Pagkatapos ng anim na oras. Gutom na kayo. Kumain sa canteen bago umuwi.)"
@@ -87,7 +87,7 @@ label chapter7:
     show kent normal at center with dissolve
     show rey normal at left with dissolve
 
-    kent "Bukas — Programming review. Mr. Kai's finals ay may coding output required. Walang AI."
+    kent "Bukas, Programming review. Mr. Kai's finals ay may coding output required. Walang AI."
     gabby "Alam ko na 'yun, Kent."
     kent "Sinasabi ko para sa lahat."
     rey "...Kasama ka ba bukas?"
@@ -123,13 +123,13 @@ label chapter7:
     hide carl with dissolve
     hide carly with dissolve
 
-    ## ── SCENE 7-3: Night before finals — phone face-down ────────────────────
+    ## ── SCENE 7-3: Night before finals, phone face-down ────────────────────
     scene bg_bedroom with dissolve
     $ safe_play("music", "audio/bgm/bgm_study.ogg", loop=True)
-    $ day_label = "Week 7 — Gabi (Finals Eve)"
+    $ day_label = "Week 7, Gabi (Finals Eve)"
 
     narrator "(Gabi na. Ang phone mo ay nakahiga nang pababa sa mesa.)"
-    narrator "(Ang notes mo — mga sariling notes, hindi AI-generated — ay nakaladlad sa harapan mo.)"
+    narrator "(Ang notes mo, mga sariling notes, hindi AI-generated, ay nakaladlad sa harapan mo.)"
     narrator "(Mabagal ka. Pero nandoon ka.)"
     narrator "(Binabasa mo ang iyong sariling sulat. May mga mali. May mga hindi kumpleto. Pero ikaw ang nagsulat.)"
 
@@ -138,6 +138,6 @@ label chapter7:
     else:
         mc_f "(Sa isip mo) Ganito pala 'to. Hindi rush. Hindi shortcut. Sariling mga salita, sariling mga tanong."
 
-    narrator "(Isinara mo ang laptop. Natulog ka nang may maliwanag na konsiyensya — hindi perpekto, pero mas maliwanag kaysa noong mga nakaraang linggo.)"
+    narrator "(Isinara mo ang laptop. Natulog ka nang may maliwanag na konsiyensya, hindi perpekto, pero mas maliwanag kaysa noong mga nakaraang linggo.)"
     narrator "(Bukas na ang finals.)"
     return
