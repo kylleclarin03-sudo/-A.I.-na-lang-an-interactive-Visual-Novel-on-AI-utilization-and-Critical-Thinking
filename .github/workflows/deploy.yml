@@ -41,13 +41,18 @@ jobs:
           rm /tmp/renpy.tar.bz2
           echo "Ren'Py SDK ready at ~/renpy-sdk/"
 
-      - name: Install Python dependencies
+      - name: Install Ren'Py dependencies
         run: |
           set -e
+          echo "Installing system dependencies for Ren'Py..."
+          sudo apt-get update
+          sudo apt-get install -y libsdl2-2.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-ttf-2.0-0
           echo "Installing Python dependencies..."
           python3 -m pip install --upgrade pip
           python3 -m pip install future
-          echo "Python dependencies installed"
+          echo "Running Ren'Py bootstrap..."
+          python3 ~/renpy-sdk/renpy.py ~/renpy-sdk bootstrap
+          echo "Ren'Py dependencies installed"
 
       - name: Build web distribution
         run: |
