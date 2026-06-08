@@ -19,7 +19,7 @@ screen hud():
             xfill True
             yalign 0.5
             spacing 40
-            xmargin 30
+            padding (30, 0)
 
             ## Day / Time label
             vbox:
