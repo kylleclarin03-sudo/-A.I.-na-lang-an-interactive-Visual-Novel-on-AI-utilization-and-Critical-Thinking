@@ -25,25 +25,42 @@ jobs:
         id: cache-renpy
         uses: actions/cache@v4
         with:
-          path: /opt/renpy
-          key: renpy-8.3.7
+          path: ~/renpy-sdk
+          key: renpy-8.3.7-${{ runner.os }}
 
       - name: Download and extract Ren'Py SDK
         if: steps.cache-renpy.outputs.cache-hit != 'true'
         run: |
+          set -e
           echo "Downloading Ren'Py SDK 8.3.7..."
-          curl -L -o /tmp/renpy.tar.bz2 \
+          curl -L -o /tmp/renpy.tar.bz2 --retry 3 --fail \
             "https://www.renpy.org/dl/8.3.7/renpy-8.3.7-sdk.tar.bz2"
           echo "Extracting Ren'Py SDK..."
-          sudo mkdir -p /opt/renpy
-          sudo tar -xjf /tmp/renpy.tar.bz2 -C /opt
-          sudo mv /opt/renpy-8.3.7-sdk/* /opt/renpy/
+          mkdir -p ~/renpy-sdk
+          tar -xjf /tmp/renpy.tar.bz2 -C ~/renpy-sdk --strip-components=1
           rm /tmp/renpy.tar.bz2
-          echo "Ren'Py SDK ready at /opt/renpy/"
+          echo "Ren'Py SDK ready at ~/renpy-sdk/"
+
+      - name: Install system dependencies
+        run: |
+          set -e
+          echo "Installing system dependencies..."
+          sudo apt-get update
+          sudo apt-get install -y libgl1-mesa-glx libglib2.0-0
+          echo "System dependencies installed"
+
+      - name: Install Python dependencies
+        run: |
+          set -e
+          echo "Installing Python dependencies..."
+          pip install --upgrade pip
+          pip install future
+          echo "Python dependencies installed"
 
       - name: Build web distribution
         run: |
-          python3 /opt/renpy/renpy.py . web_build
+          set -e
+          python3 ~/renpy-sdk/renpy.py . web_build
           echo "Checking build output..."
           ls -la web_build/ 2>/dev/null || echo "No web_build dir"
           mkdir -p dist
@@ -57,6 +74,7 @@ jobs:
 
       - name: List dist contents
         run: |
+          set -e
           echo "dist/ has $(find dist/ -type f | wc -l) files"
           find dist/ -type f | head -20
 
