@@ -50,7 +50,7 @@ jobs:
           echo "Installing Python dependencies..."
           python3 -m pip install --upgrade pip
           python3 -m pip install future
-          echo "Running Ren'Py bootstrap..."
+          echo "Running Ren'Py bootstrap to build pygame_sdl2..."
           python3 ~/renpy-sdk/renpy.py ~/renpy-sdk bootstrap
           echo "Ren'Py dependencies installed"
 
@@ -81,9 +81,6 @@ jobs:
           path: dist/
 
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
     steps:
