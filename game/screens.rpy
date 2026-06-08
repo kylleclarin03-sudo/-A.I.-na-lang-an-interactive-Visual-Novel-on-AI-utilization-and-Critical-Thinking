@@ -14,12 +14,12 @@ screen hud():
         xalign 0.5
         yalign 0.0
         yoffset 0
+        padding (30, 0)
         background Solid("#0d1117E0")
         hbox:
             xfill True
             yalign 0.5
             spacing 40
-            padding (30, 0)
 
             ## Day / Time label
             vbox:
