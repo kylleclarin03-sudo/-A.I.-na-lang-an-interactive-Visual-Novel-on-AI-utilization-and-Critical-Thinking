@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Ren'Py build output
+dist/
+build/
+tmp/
+log.txt
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary verification scripts
+verify.py
+makedirs.py
+
+# Temporary files
+*.swp
+*.swo
