@@ -41,20 +41,12 @@ jobs:
           rm /tmp/renpy.tar.bz2
           echo "Ren'Py SDK ready at ~/renpy-sdk/"
 
-      - name: Install system dependencies
-        run: |
-          set -e
-          echo "Installing system dependencies..."
-          sudo apt-get update
-          sudo apt-get install -y libgl1-mesa-glx libglib2.0-0
-          echo "System dependencies installed"
-
       - name: Install Python dependencies
         run: |
           set -e
           echo "Installing Python dependencies..."
-          pip install --upgrade pip
-          pip install future
+          python3 -m pip install --upgrade pip
+          python3 -m pip install future
           echo "Python dependencies installed"
 
       - name: Build web distribution
