@@ -26,12 +26,11 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends \
-            xvfb libgl1 libgles2 p7zip-full wget
+            xvfb libgl1 libgles2 wget unzip
 
       - name: Download Ren'Py SDK
         run: |
-          wget -q \
-            "https://www.renpy.org/dl/8.3.7/renpy-8.3.7-sdk.tar.bz2" \
+          wget -q "https://www.renpy.org/dl/8.3.7/renpy-8.3.7-sdk.tar.bz2" \
             -O "$HOME/renpy-sdk.tar.bz2"
           tar -xjf "$HOME/renpy-sdk.tar.bz2" -C "$HOME/"
           mv "$HOME/renpy-8.3.7-sdk" "$HOME/renpy-sdk"
@@ -39,33 +38,21 @@ jobs:
 
       - name: Install Ren'Py Web Platform
         run: |
-          wget -q \
-            "https://www.renpy.org/dl/8.3.7/renpy-8.3.7-web.zip" \
+          wget -q "https://www.renpy.org/dl/8.3.7/renpy-8.3.7-web.zip" \
             -O "$HOME/renpy-web.zip"
           mkdir -p "$HOME/renpy-sdk/web"
           unzip -q "$HOME/renpy-web.zip" -d "$HOME/renpy-sdk/web"
-          echo "=== Web platform top-level layout ==="
-          ls "$HOME/renpy-sdk/web/"
-          # If the zip extracted into a single subdirectory, flatten it
-          FILE_COUNT=$(find "$HOME/renpy-sdk/web" -maxdepth 1 -type f | wc -l)
-          DIR_COUNT=$(find "$HOME/renpy-sdk/web" -mindepth 1 -maxdepth 1 -type d | wc -l)
-          if [ "$FILE_COUNT" -eq 0 ] && [ "$DIR_COUNT" -eq 1 ]; then
-            SUBDIR=$(find "$HOME/renpy-sdk/web" -mindepth 1 -maxdepth 1 -type d | head -1)
-            echo "Flattening subdirectory: $SUBDIR"
+          # If zip created a subdirectory, flatten it
+          SUBDIR=$(find "$HOME/renpy-sdk/web" -mindepth 1 -maxdepth 1 -type d | head -1)
+          if [ -n "$SUBDIR" ] && [ -z "$(find "$HOME/renpy-sdk/web" -maxdepth 1 -type f -name '*.js')" ]; then
+            echo "Flattening $SUBDIR"
             mv "$SUBDIR"/* "$HOME/renpy-sdk/web/"
-            rmdir "$SUBDIR"
+            rmdir "$SUBDIR" 2>/dev/null || true
           fi
-          echo "=== Final web platform layout ==="
+          echo "Web platform contents:"
           ls "$HOME/renpy-sdk/web/"
-          # Verify the web platform is correctly installed
-          if [ ! -f "$HOME/renpy-sdk/web/index.html" ] && [ ! -f "$HOME/renpy-sdk/web/renpy.js" ] && [ ! -f "$HOME/renpy-sdk/web/pygame.html" ]; then
-            echo "ERROR: Web platform files not found. Contents:"
-            find "$HOME/renpy-sdk/web" -maxdepth 2 | head -30
-            exit 1
-          fi
-          echo "Web platform installed correctly."
 
-      - name: Build Web Distribution via Launcher
+      - name: Build Web Distribution
         run: |
           export RENPY_NO_STEAM=1
           Xvfb :99 -screen 0 1024x768x24 &
@@ -78,38 +65,33 @@ jobs:
             "$GITHUB_WORKSPACE" \
             --package web \
             --destination "$GITHUB_WORKSPACE/dist-raw"
-          echo "--- dist-raw contents ---"
-          find "$GITHUB_WORKSPACE/dist-raw" -maxdepth 2 | head -20
+          echo "=== dist-raw contents ==="
+          find "$GITHUB_WORKSPACE/dist-raw" -maxdepth 2
 
-      - name: Collect web files into dist/
+      - name: Extract web build to dist/
         run: |
-          # Find the web zip (produced by the launcher)
-          WEB_ZIP=$(find "$GITHUB_WORKSPACE/dist-raw" -name "*-web.zip" | head -n 1)
+          WEB_ZIP=$(find "$GITHUB_WORKSPACE/dist-raw" -name "*-web.zip" | head -1)
           if [ -z "$WEB_ZIP" ]; then
-            echo "No web zip found. Full dist-raw listing:"
-            find "$GITHUB_WORKSPACE/dist-raw" -maxdepth 4
+            echo "No web zip found:"
+            find "$GITHUB_WORKSPACE/dist-raw"
             exit 1
           fi
-          echo "Found web zip: $WEB_ZIP"
+          echo "Using: $WEB_ZIP"
           mkdir -p "$GITHUB_WORKSPACE/dist"
           unzip -q "$WEB_ZIP" -d "$GITHUB_WORKSPACE/dist"
-          echo "--- dist/ top-level ---"
-          ls -lh "$GITHUB_WORKSPACE/dist/"
-          # Find index.html
-          INDEX_PATH=$(find "$GITHUB_WORKSPACE/dist" -name "index.html" | head -1)
-          if [ -z "$INDEX_PATH" ]; then
-            echo "ERROR: index.html not found after unzip. Full dist tree:"
-            find "$GITHUB_WORKSPACE/dist" -maxdepth 4
+          # Flatten if needed
+          INDEX=$(find "$GITHUB_WORKSPACE/dist" -name "index.html" | head -1)
+          if [ -z "$INDEX" ]; then
+            echo "No index.html — full tree:"
+            find "$GITHUB_WORKSPACE/dist"
             exit 1
           fi
-          # If index.html is in a subdirectory, move contents up to dist root
-          INDEX_DIR=$(dirname "$INDEX_PATH")
-          if [ "$INDEX_DIR" != "$GITHUB_WORKSPACE/dist" ]; then
-            echo "index.html is in $INDEX_DIR — moving to dist root"
-            cp -r "$INDEX_DIR"/. "$GITHUB_WORKSPACE/dist/"
+          IDIR=$(dirname "$INDEX")
+          if [ "$IDIR" != "$GITHUB_WORKSPACE/dist" ]; then
+            cp -r "$IDIR"/. "$GITHUB_WORKSPACE/dist/"
           fi
-          echo "--- Final dist/ ---"
-          ls -lh "$GITHUB_WORKSPACE/dist/"
+          echo "=== Final dist/ ==="
+          ls "$GITHUB_WORKSPACE/dist/"
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
