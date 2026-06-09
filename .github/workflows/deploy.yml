@@ -22,7 +22,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Xvfb and dependencies
+      - name: Install dependencies
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends \
@@ -42,10 +42,21 @@ jobs:
           wget -q \
             "https://www.renpy.org/dl/8.3.7/renpy-8.3.7-web.zip" \
             -O "$HOME/renpy-web.zip"
-          unzip -q "$HOME/renpy-web.zip" -d "$HOME/"
-          mv "$HOME/renpy-8.3.7-web" "$HOME/renpy-sdk/web"
-          echo "Web platform installed at $HOME/renpy-sdk/web"
-          ls "$HOME/renpy-sdk/web" | head -10
+          mkdir -p "$HOME/renpy-sdk/web"
+          unzip -q "$HOME/renpy-web.zip" -d "$HOME/renpy-sdk/web"
+          echo "=== Web platform contents (top-level) ==="
+          ls "$HOME/renpy-sdk/web/"
+          # If the zip extracted into a subfolder, flatten it
+          SUBDIRS=$(find "$HOME/renpy-sdk/web" -mindepth 1 -maxdepth 1 -type d)
+          SUBDIR_COUNT=$(echo "$SUBDIRS" | grep -c . || true)
+          if [ "$SUBDIR_COUNT" -eq 1 ] && [ -z "$(find "$HOME/renpy-sdk/web" -maxdepth 1 -type f)" ]; then
+            echo "Zip extracted into a subfolder, moving contents up..."
+            SUBDIR=$(echo "$SUBDIRS" | head -1)
+            mv "$SUBDIR"/* "$HOME/renpy-sdk/web/"
+            rmdir "$SUBDIR"
+          fi
+          echo "=== Final web platform layout ==="
+          ls "$HOME/renpy-sdk/web/" | head -20
 
       - name: Build Web Distribution via Launcher
         run: |
@@ -86,7 +97,7 @@ jobs:
           fi
           INDEX_DIR=$(dirname "$INDEX_PATH")
           if [ "$INDEX_DIR" != "$GITHUB_WORKSPACE/dist" ]; then
-            echo "index.html found in subdirectory, moving to root"
+            echo "index.html in subdirectory, moving contents to root"
             cp -r "$INDEX_DIR"/. "$GITHUB_WORKSPACE/dist/"
           fi
           echo "--- Final dist/ ---"
