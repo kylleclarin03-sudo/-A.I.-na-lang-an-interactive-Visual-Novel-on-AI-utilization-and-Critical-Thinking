@@ -17,16 +17,61 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      RENPY_VERSION: "8.3.7"
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build Ren'Py Web Distribution
-        uses: PaxlavaGames/renpy-web-build@v1
-        with:
-          renpy-version: "8.3.7"
-          project-dir: "."
-          output-dir: "dist"
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            libgl1 libgles2 p7zip-full wget unzip
+
+      - name: Download Ren'Py SDK
+        run: |
+          wget -q \
+            "https://www.renpy.org/dl/${RENPY_VERSION}/renpy-${RENPY_VERSION}-sdk.tar.bz2" \
+            -O renpy-sdk.tar.bz2
+          tar -xjf renpy-sdk.tar.bz2
+          mv "renpy-${RENPY_VERSION}-sdk" "${HOME}/renpy-sdk"
+          chmod +x "${HOME}/renpy-sdk/renpy.sh"
+          echo "SDK ready at ${HOME}/renpy-sdk"
+
+      - name: Download Ren'Py Web Platform
+        run: |
+          wget -q \
+            "https://www.renpy.org/dl/${RENPY_VERSION}/renpy-${RENPY_VERSION}-web.zip" \
+            -O renpy-web.zip
+          unzip -q renpy-web.zip -d "${HOME}/renpy-sdk/"
+          echo "Web platform extracted"
+          ls "${HOME}/renpy-sdk/" | grep -i web || echo "No web folder found — check zip contents"
+
+      - name: Build Web Distribution
+        run: |
+          export RENPY_NO_STEAM=1
+          "${HOME}/renpy-sdk/renpy.sh" "$GITHUB_WORKSPACE" distribute --package web
+          echo "--- Build output ---"
+          find "$GITHUB_WORKSPACE" -maxdepth 3 \
+            \( -name "*-web" -type d \) -o \( -name "*.zip" -path "*web*" \) \
+            | head -20
+
+      - name: Collect dist files
+        run: |
+          WEB_DIR=$(find "$GITHUB_WORKSPACE" -maxdepth 3 -type d -name "*-web" | head -n 1)
+          if [ -z "$WEB_DIR" ]; then
+            echo "ERROR: No *-web directory found after build."
+            echo "Full directory listing:"
+            find "$GITHUB_WORKSPACE" -maxdepth 3 -type d
+            exit 1
+          fi
+          echo "Found web build: $WEB_DIR"
+          mkdir -p "$GITHUB_WORKSPACE/dist"
+          cp -r "$WEB_DIR"/. "$GITHUB_WORKSPACE/dist/"
+          echo "--- dist/ contents ---"
+          ls -lh "$GITHUB_WORKSPACE/dist/" | head -20
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
