@@ -53,13 +53,28 @@ jobs:
           fi
 
           echo "=== Web platform contents ==="
-          ls "$HOME/renpy-sdk/web/"
+          ls -la "$HOME/renpy-sdk/web/" | head -20
+
+          # Verify key files exist
+          if [ ! -f "$HOME/renpy-sdk/web/index.html" ]; then
+            echo "WARNING: index.html not found in web platform"
+          fi
 
       - name: Build Web Distribution
         run: |
           export RENPY_NO_STEAM=1
           export SDL_VIDEODRIVER=dummy
           export SDL_AUDIODRIVER=dummy
+
+          # Verify web platform is readable
+          if [ ! -d "$HOME/renpy-sdk/web" ]; then
+            echo "ERROR: Web platform directory not found!"
+            exit 1
+          fi
+
+          WEB_FILES=$(find "$HOME/renpy-sdk/web" -type f | wc -l)
+          echo "Web platform has $WEB_FILES files"
+
           Xvfb :99 -screen 0 1280x720x24 &
           XVFB_PID=$!
           sleep 2
@@ -67,17 +82,18 @@ jobs:
 
           mkdir -p "$GITHUB_WORKSPACE/dist-raw"
 
+          echo "=== Starting distribute command ==="
           "$HOME/renpy-sdk/renpy.sh" \
             "$HOME/renpy-sdk/launcher" \
             distribute \
             "$GITHUB_WORKSPACE" \
             --package web \
-            --destination "$GITHUB_WORKSPACE/dist-raw"
+            --destination "$GITHUB_WORKSPACE/dist-raw" || true
 
           kill "$XVFB_PID" 2>/dev/null || true
 
-          echo "=== dist-raw contents ==="
-          find "$GITHUB_WORKSPACE/dist-raw" -maxdepth 2
+          echo "=== dist-raw contents after build ==="
+          find "$GITHUB_WORKSPACE/dist-raw" -maxdepth 3 -type f
 
       - name: Extract web build to dist/
         run: |
@@ -92,20 +108,30 @@ jobs:
           mkdir -p "$GITHUB_WORKSPACE/dist"
           unzip -q "$WEB_ZIP" -d "$GITHUB_WORKSPACE/dist"
 
+          echo "=== Contents after unzip ==="
+          find "$GITHUB_WORKSPACE/dist" -maxdepth 2 -type f | head -20
+
+          # Search for index.html in nested directories
           INDEX=$(find "$GITHUB_WORKSPACE/dist" -name "index.html" | head -1)
           if [ -z "$INDEX" ]; then
-            echo "ERROR: index.html missing after unzip. Full tree:"
-            find "$GITHUB_WORKSPACE/dist"
+            echo "ERROR: index.html not found. Full tree:"
+            find "$GITHUB_WORKSPACE/dist" -type f | head -50
             exit 1
           fi
+
+          echo "Found index.html at: $INDEX"
           IDIR=$(dirname "$INDEX")
+
+          # Hoist files to dist/ if they're nested
           if [ "$IDIR" != "$GITHUB_WORKSPACE/dist" ]; then
             echo "Hoisting from $IDIR to dist/"
             cp -r "$IDIR"/. "$GITHUB_WORKSPACE/dist/"
+            # Clean up original structure
+            find "$GITHUB_WORKSPACE/dist" -mindepth 1 -maxdepth 1 -type d ! -name . -exec rm -rf {} + 2>/dev/null || true
           fi
 
-          echo "=== Final dist/ ==="
-          ls "$GITHUB_WORKSPACE/dist/"
+          echo "=== Final dist/ contents ==="
+          ls -la "$GITHUB_WORKSPACE/dist/" | head -20
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
