@@ -1,12 +1,12 @@
 ## game/build.rpy
-## Tells Ren'Py what packages to build for distribution.
+## Registers the web distribution package for Ren'Py's distribute command.
 
 init python:
     build.name = "AInaLang"
     build.executable_name = "AInaLang"
 
-    build.include_old_themes = False
-    build.classify_renpy("**", None)
+    ## Clear default packages (we only want web)
+    build.packages = []
 
-    ## Web (HTML5/WebAssembly) — the only package we need
-    build.web("web", "A.I. na lang!")
+    ## Register the web package using the correct API
+    build.package("web", "web", "")

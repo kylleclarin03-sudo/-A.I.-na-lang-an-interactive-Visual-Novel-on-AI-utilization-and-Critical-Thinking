@@ -42,19 +42,21 @@ jobs:
             -O "$HOME/renpy-web.zip"
           mkdir -p "$HOME/renpy-sdk/web"
           unzip -q "$HOME/renpy-web.zip" -d "$HOME/renpy-sdk/web"
-          # If zip created a subdirectory, flatten it
+          # Flatten if the zip created a subdirectory
           SUBDIR=$(find "$HOME/renpy-sdk/web" -mindepth 1 -maxdepth 1 -type d | head -1)
-          if [ -n "$SUBDIR" ] && [ -z "$(find "$HOME/renpy-sdk/web" -maxdepth 1 -type f -name '*.js')" ]; then
-            echo "Flattening $SUBDIR"
+          if [ -n "$SUBDIR" ] && [ -z "$(find "$HOME/renpy-sdk/web" -maxdepth 1 -type f 2>/dev/null)" ]; then
+            echo "Flattening $SUBDIR into web/"
             mv "$SUBDIR"/* "$HOME/renpy-sdk/web/"
             rmdir "$SUBDIR" 2>/dev/null || true
           fi
-          echo "Web platform contents:"
+          echo "=== Web platform contents ==="
           ls "$HOME/renpy-sdk/web/"
 
       - name: Build Web Distribution
         run: |
           export RENPY_NO_STEAM=1
+          export SDL_VIDEODRIVER=dummy
+          export SDL_AUDIODRIVER=dummy
           Xvfb :99 -screen 0 1024x768x24 &
           sleep 2
           export DISPLAY=:99
@@ -72,17 +74,16 @@ jobs:
         run: |
           WEB_ZIP=$(find "$GITHUB_WORKSPACE/dist-raw" -name "*-web.zip" | head -1)
           if [ -z "$WEB_ZIP" ]; then
-            echo "No web zip found:"
+            echo "ERROR: No web zip found. Full listing:"
             find "$GITHUB_WORKSPACE/dist-raw"
             exit 1
           fi
-          echo "Using: $WEB_ZIP"
+          echo "Found: $WEB_ZIP"
           mkdir -p "$GITHUB_WORKSPACE/dist"
           unzip -q "$WEB_ZIP" -d "$GITHUB_WORKSPACE/dist"
-          # Flatten if needed
           INDEX=$(find "$GITHUB_WORKSPACE/dist" -name "index.html" | head -1)
           if [ -z "$INDEX" ]; then
-            echo "No index.html — full tree:"
+            echo "ERROR: index.html missing. Full dist tree:"
             find "$GITHUB_WORKSPACE/dist"
             exit 1
           fi
