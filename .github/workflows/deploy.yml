@@ -71,9 +71,15 @@ jobs:
           sleep 2
           export DISPLAY=:99
 
-          mkdir -p "$GITHUB_WORKSPACE/dist-raw"
+          mkdir -p "$GITHUB_WORKSPACE/dist-raw" "$GITHUB_WORKSPACE/dist"
 
-          echo "=== Method 1: Try launcher distribute ==="
+          echo "=== Step 1: Compile game bytecode ==="
+          "$HOME/renpy-sdk/renpy.sh" \
+            "$GITHUB_WORKSPACE" \
+            compile \
+            --no-archive || true
+
+          echo "=== Step 2: Run launcher distribute for web ==="
           "$HOME/renpy-sdk/renpy.sh" \
             "$HOME/renpy-sdk/launcher" \
             distribute \
@@ -81,18 +87,11 @@ jobs:
             --package web \
             --destination "$GITHUB_WORKSPACE/dist-raw" || true
 
-          echo "=== Checking dist-raw structure ==="
-          ls -R "$GITHUB_WORKSPACE/dist-raw" | head -100
+          echo "=== Step 3: Inspect web platform HTML files ==="
+          find "$HOME/renpy-sdk/web" -name "*.html" -o -name "index.*" | head -10
 
-          # Check if we have a web subdirectory with HTML
-          if [ -f "$GITHUB_WORKSPACE/dist-raw/web/index.html" ]; then
-            echo "Found web/index.html"
-          elif [ -f "$GITHUB_WORKSPACE/dist-raw/AInaLang/index.html" ]; then
-            echo "Found AInaLang/index.html"
-          else
-            echo "No index.html found in dist-raw"
-            find "$GITHUB_WORKSPACE/dist-raw" -name "*.html" 2>/dev/null
-          fi
+          echo "=== Step 4: List dist-raw structure ==="
+          find "$GITHUB_WORKSPACE/dist-raw" -type f -name "*.html" -o -name "*.js" 2>/dev/null | head -20
 
           kill "$XVFB_PID" 2>/dev/null || true
 
