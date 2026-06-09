@@ -22,19 +22,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install dependencies
+      - name: Install system dependencies
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends \
             xvfb libgl1 libgles2 wget unzip
 
-      - name: Download Ren'Py SDK
+      - name: Download Ren'Py SDK 8.3.7
         run: |
           wget -q "https://www.renpy.org/dl/8.3.7/renpy-8.3.7-sdk.tar.bz2" \
             -O "$HOME/renpy-sdk.tar.bz2"
           tar -xjf "$HOME/renpy-sdk.tar.bz2" -C "$HOME/"
           mv "$HOME/renpy-8.3.7-sdk" "$HOME/renpy-sdk"
           chmod +x "$HOME/renpy-sdk/renpy.sh"
+          echo "$HOME/renpy-sdk" >> "$GITHUB_PATH"
 
       - name: Install Ren'Py Web Platform
         run: |
@@ -42,13 +43,15 @@ jobs:
             -O "$HOME/renpy-web.zip"
           mkdir -p "$HOME/renpy-sdk/web"
           unzip -q "$HOME/renpy-web.zip" -d "$HOME/renpy-sdk/web"
-          # Flatten if the zip created a subdirectory
+
           SUBDIR=$(find "$HOME/renpy-sdk/web" -mindepth 1 -maxdepth 1 -type d | head -1)
-          if [ -n "$SUBDIR" ] && [ -z "$(find "$HOME/renpy-sdk/web" -maxdepth 1 -type f 2>/dev/null)" ]; then
+          TOP_FILES=$(find "$HOME/renpy-sdk/web" -maxdepth 1 -type f | wc -l)
+          if [ -n "$SUBDIR" ] && [ "$TOP_FILES" -eq 0 ]; then
             echo "Flattening $SUBDIR into web/"
             mv "$SUBDIR"/* "$HOME/renpy-sdk/web/"
             rmdir "$SUBDIR" 2>/dev/null || true
           fi
+
           echo "=== Web platform contents ==="
           ls "$HOME/renpy-sdk/web/"
 
@@ -57,16 +60,22 @@ jobs:
           export RENPY_NO_STEAM=1
           export SDL_VIDEODRIVER=dummy
           export SDL_AUDIODRIVER=dummy
-          Xvfb :99 -screen 0 1024x768x24 &
+          Xvfb :99 -screen 0 1280x720x24 &
+          XVFB_PID=$!
           sleep 2
           export DISPLAY=:99
+
           mkdir -p "$GITHUB_WORKSPACE/dist-raw"
+
           "$HOME/renpy-sdk/renpy.sh" \
             "$HOME/renpy-sdk/launcher" \
             distribute \
             "$GITHUB_WORKSPACE" \
             --package web \
             --destination "$GITHUB_WORKSPACE/dist-raw"
+
+          kill "$XVFB_PID" 2>/dev/null || true
+
           echo "=== dist-raw contents ==="
           find "$GITHUB_WORKSPACE/dist-raw" -maxdepth 2
 
@@ -74,23 +83,27 @@ jobs:
         run: |
           WEB_ZIP=$(find "$GITHUB_WORKSPACE/dist-raw" -name "*-web.zip" | head -1)
           if [ -z "$WEB_ZIP" ]; then
-            echo "ERROR: No web zip found. Full listing:"
+            echo "ERROR: No *-web.zip found in dist-raw/. Full listing:"
             find "$GITHUB_WORKSPACE/dist-raw"
             exit 1
           fi
           echo "Found: $WEB_ZIP"
+
           mkdir -p "$GITHUB_WORKSPACE/dist"
           unzip -q "$WEB_ZIP" -d "$GITHUB_WORKSPACE/dist"
+
           INDEX=$(find "$GITHUB_WORKSPACE/dist" -name "index.html" | head -1)
           if [ -z "$INDEX" ]; then
-            echo "ERROR: index.html missing. Full dist tree:"
+            echo "ERROR: index.html missing after unzip. Full tree:"
             find "$GITHUB_WORKSPACE/dist"
             exit 1
           fi
           IDIR=$(dirname "$INDEX")
           if [ "$IDIR" != "$GITHUB_WORKSPACE/dist" ]; then
+            echo "Hoisting from $IDIR to dist/"
             cp -r "$IDIR"/. "$GITHUB_WORKSPACE/dist/"
           fi
+
           echo "=== Final dist/ ==="
           ls "$GITHUB_WORKSPACE/dist/"
 
