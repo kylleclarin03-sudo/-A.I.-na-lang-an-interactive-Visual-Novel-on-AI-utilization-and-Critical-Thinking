@@ -32,17 +32,17 @@ jobs:
         run: |
           wget -q \
             "https://www.renpy.org/dl/8.3.7/renpy-8.3.7-sdk.tar.bz2" \
-            -O renpy-sdk.tar.bz2
-          tar -xjf renpy-sdk.tar.bz2
-          mv renpy-8.3.7-sdk "$HOME/renpy-sdk"
+            -O "$HOME/renpy-sdk.tar.bz2"
+          tar -xjf "$HOME/renpy-sdk.tar.bz2" -C "$HOME/"
+          mv "$HOME/renpy-8.3.7-sdk" "$HOME/renpy-sdk"
           chmod +x "$HOME/renpy-sdk/renpy.sh"
 
       - name: Download Ren'Py Web Platform
         run: |
           wget -q \
             "https://www.renpy.org/dl/8.3.7/renpy-8.3.7-web.zip" \
-            -O renpy-web.zip
-          unzip -q renpy-web.zip -d "$HOME/renpy-sdk/"
+            -O "$HOME/renpy-web.zip"
+          unzip -q "$HOME/renpy-web.zip" -d "$HOME/renpy-sdk/"
           echo "Web platform contents:"
           ls "$HOME/renpy-sdk/" | grep -i web
 
@@ -66,14 +66,29 @@ jobs:
           WEB_ZIP=$(find "$GITHUB_WORKSPACE/dist-raw" \
             -name "*-web.zip" | head -n 1)
           if [ -z "$WEB_ZIP" ]; then
-            echo "No web zip found. Listing dist-raw:"
+            echo "No web zip found. Full dist-raw listing:"
             find "$GITHUB_WORKSPACE/dist-raw" -maxdepth 4
             exit 1
           fi
           echo "Found: $WEB_ZIP"
           mkdir -p "$GITHUB_WORKSPACE/dist"
           unzip -q "$WEB_ZIP" -d "$GITHUB_WORKSPACE/dist"
-          echo "--- dist/ contents ---"
+          echo "--- dist/ top-level ---"
+          ls -lh "$GITHUB_WORKSPACE/dist/"
+          echo "--- Searching for index.html ---"
+          find "$GITHUB_WORKSPACE/dist" -name "index.html" | head -5
+          INDEX_PATH=$(find "$GITHUB_WORKSPACE/dist" -name "index.html" | head -1)
+          if [ -z "$INDEX_PATH" ]; then
+            echo "ERROR: index.html not found. Full dist tree:"
+            find "$GITHUB_WORKSPACE/dist" -maxdepth 5
+            exit 1
+          fi
+          INDEX_DIR=$(dirname "$INDEX_PATH")
+          if [ "$INDEX_DIR" != "$GITHUB_WORKSPACE/dist" ]; then
+            echo "index.html found in subdirectory, moving to root"
+            cp -r "$INDEX_DIR"/. "$GITHUB_WORKSPACE/dist/"
+          fi
+          echo "--- Final dist/ ---"
           ls -lh "$GITHUB_WORKSPACE/dist/"
 
       - name: Upload Pages artifact
