@@ -1,4 +1,4 @@
-name: Build and Deploy A.I. na lang! to GitHub Pages
+name: Build and Deploy to GitHub Pages
 
 on:
   push:
@@ -21,68 +21,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Cache Ren'Py SDK
-        id: cache-renpy
-        uses: actions/cache@v4
+      - name: Build Ren'Py Web Distribution
+        uses: PaxlavaGames/renpy-web-build@v1
         with:
-          path: ~/renpy-sdk
-          key: renpy-8.3.7-${{ runner.os }}
-
-      - name: Download and extract Ren'Py SDK
-        if: steps.cache-renpy.outputs.cache-hit != 'true'
-        run: |
-          set -e
-          echo "Downloading Ren'Py SDK 8.3.7..."
-          curl -L -o /tmp/renpy.tar.bz2 --retry 3 --fail \
-            "https://www.renpy.org/dl/8.3.7/renpy-8.3.7-sdk.tar.bz2"
-          echo "Extracting Ren'Py SDK..."
-          mkdir -p ~/renpy-sdk
-          tar -xjf /tmp/renpy.tar.bz2 -C ~/renpy-sdk --strip-components=1
-          rm /tmp/renpy.tar.bz2
-          chmod +x ~/renpy-sdk/renpy.sh
-          echo "Ren'Py SDK ready at ~/renpy-sdk/"
-
-      - name: Install Ren'Py system dependencies
-        run: |
-          set -e
-          echo "Installing SDL2 runtime libraries for Ren'Py..."
-          sudo apt-get update
-          sudo apt-get install -y \
-            libsdl2-2.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-ttf-2.0-0
-          echo "System dependencies installed"
-
-      - name: Build web distribution with renpy.sh
-        run: |
-          set -e
-          echo "Building web distribution using Ren'Py's bundled Python (renpy.sh)..."
-          ~/renpy-sdk/renpy.sh . compile --web
-          echo "Checking build output..."
-          ls -la
-          # The web build creates a directory named <project>-web
-          # The project name comes from config.name; we copy whatever -web dir exists
-          WEB_DIR=$(find . -maxdepth 1 -type d -name "*-web" | head -n 1)
-          if [ -z "$WEB_DIR" ]; then
-            echo "No *-web build directory found"
-            exit 1
-          fi
-          echo "Found web build at: $WEB_DIR"
-          mkdir -p dist
-          # Preserve the directory structure (index.html lives at the top level)
-          cp -r "$WEB_DIR"/* dist/
-          echo "Copied $WEB_DIR to dist/"
-          ls -la dist/ | head -20
-
-      - name: List dist contents
-        run: |
-          set -e
-          echo "dist/ has $(find dist/ -type f | wc -l) files"
-          find dist/ -type f | head -20
-          # Verify index.html exists at root (required for GitHub Pages)
-          if [ ! -f dist/index.html ]; then
-            echo "ERROR: dist/index.html not found"
-            exit 1
-          fi
-          echo "dist/index.html exists - ready to deploy"
+          renpy-version: "8.3.7"
+          project-dir: "."
+          output-dir: "dist"
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
@@ -90,6 +34,9 @@ jobs:
           path: dist/
 
   deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
     steps:
