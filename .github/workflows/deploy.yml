@@ -44,19 +44,26 @@ jobs:
             -O "$HOME/renpy-web.zip"
           mkdir -p "$HOME/renpy-sdk/web"
           unzip -q "$HOME/renpy-web.zip" -d "$HOME/renpy-sdk/web"
-          echo "=== Web platform contents (top-level) ==="
+          echo "=== Web platform top-level layout ==="
           ls "$HOME/renpy-sdk/web/"
-          # If the zip extracted into a subfolder, flatten it
-          SUBDIRS=$(find "$HOME/renpy-sdk/web" -mindepth 1 -maxdepth 1 -type d)
-          SUBDIR_COUNT=$(echo "$SUBDIRS" | grep -c . || true)
-          if [ "$SUBDIR_COUNT" -eq 1 ] && [ -z "$(find "$HOME/renpy-sdk/web" -maxdepth 1 -type f)" ]; then
-            echo "Zip extracted into a subfolder, moving contents up..."
-            SUBDIR=$(echo "$SUBDIRS" | head -1)
+          # If the zip extracted into a single subdirectory, flatten it
+          FILE_COUNT=$(find "$HOME/renpy-sdk/web" -maxdepth 1 -type f | wc -l)
+          DIR_COUNT=$(find "$HOME/renpy-sdk/web" -mindepth 1 -maxdepth 1 -type d | wc -l)
+          if [ "$FILE_COUNT" -eq 0 ] && [ "$DIR_COUNT" -eq 1 ]; then
+            SUBDIR=$(find "$HOME/renpy-sdk/web" -mindepth 1 -maxdepth 1 -type d | head -1)
+            echo "Flattening subdirectory: $SUBDIR"
             mv "$SUBDIR"/* "$HOME/renpy-sdk/web/"
             rmdir "$SUBDIR"
           fi
           echo "=== Final web platform layout ==="
-          ls "$HOME/renpy-sdk/web/" | head -20
+          ls "$HOME/renpy-sdk/web/"
+          # Verify the web platform is correctly installed
+          if [ ! -f "$HOME/renpy-sdk/web/index.html" ] && [ ! -f "$HOME/renpy-sdk/web/renpy.js" ] && [ ! -f "$HOME/renpy-sdk/web/pygame.html" ]; then
+            echo "ERROR: Web platform files not found. Contents:"
+            find "$HOME/renpy-sdk/web" -maxdepth 2 | head -30
+            exit 1
+          fi
+          echo "Web platform installed correctly."
 
       - name: Build Web Distribution via Launcher
         run: |
@@ -64,40 +71,41 @@ jobs:
           Xvfb :99 -screen 0 1024x768x24 &
           sleep 2
           export DISPLAY=:99
+          mkdir -p "$GITHUB_WORKSPACE/dist-raw"
           "$HOME/renpy-sdk/renpy.sh" \
             "$HOME/renpy-sdk/launcher" \
             distribute \
             "$GITHUB_WORKSPACE" \
             --package web \
             --destination "$GITHUB_WORKSPACE/dist-raw"
-          echo "--- Raw build output ---"
-          find "$GITHUB_WORKSPACE/dist-raw" -maxdepth 3 | head -30
+          echo "--- dist-raw contents ---"
+          find "$GITHUB_WORKSPACE/dist-raw" -maxdepth 2 | head -20
 
       - name: Collect web files into dist/
         run: |
-          WEB_ZIP=$(find "$GITHUB_WORKSPACE/dist-raw" \
-            -name "*-web.zip" | head -n 1)
+          # Find the web zip (produced by the launcher)
+          WEB_ZIP=$(find "$GITHUB_WORKSPACE/dist-raw" -name "*-web.zip" | head -n 1)
           if [ -z "$WEB_ZIP" ]; then
             echo "No web zip found. Full dist-raw listing:"
             find "$GITHUB_WORKSPACE/dist-raw" -maxdepth 4
             exit 1
           fi
-          echo "Found: $WEB_ZIP"
+          echo "Found web zip: $WEB_ZIP"
           mkdir -p "$GITHUB_WORKSPACE/dist"
           unzip -q "$WEB_ZIP" -d "$GITHUB_WORKSPACE/dist"
           echo "--- dist/ top-level ---"
           ls -lh "$GITHUB_WORKSPACE/dist/"
-          echo "--- Searching for index.html ---"
-          find "$GITHUB_WORKSPACE/dist" -name "index.html" | head -5
+          # Find index.html
           INDEX_PATH=$(find "$GITHUB_WORKSPACE/dist" -name "index.html" | head -1)
           if [ -z "$INDEX_PATH" ]; then
-            echo "ERROR: index.html not found. Full dist tree:"
-            find "$GITHUB_WORKSPACE/dist" -maxdepth 5
+            echo "ERROR: index.html not found after unzip. Full dist tree:"
+            find "$GITHUB_WORKSPACE/dist" -maxdepth 4
             exit 1
           fi
+          # If index.html is in a subdirectory, move contents up to dist root
           INDEX_DIR=$(dirname "$INDEX_PATH")
           if [ "$INDEX_DIR" != "$GITHUB_WORKSPACE/dist" ]; then
-            echo "index.html in subdirectory, moving contents to root"
+            echo "index.html is in $INDEX_DIR — moving to dist root"
             cp -r "$INDEX_DIR"/. "$GITHUB_WORKSPACE/dist/"
           fi
           echo "--- Final dist/ ---"
