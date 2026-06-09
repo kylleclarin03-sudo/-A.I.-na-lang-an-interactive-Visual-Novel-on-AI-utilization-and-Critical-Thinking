@@ -137,26 +137,26 @@ jobs:
           # Verify index.html exists
           if [ ! -f "$GITHUB_WORKSPACE/dist/index.html" ]; then
             echo "ERROR: index.html not found. Creating fallback..."
-            cat > "$GITHUB_WORKSPACE/dist/index.html" << 'EOF'
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>A.I. na lang!</title>
-    <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #000; }
-        .error { color: #f00; text-align: center; }
-    </style>
-</head>
-<body>
-    <div class="error">
-        <h1>Web Build Error</h1>
-        <p>The web build did not produce the expected files.</p>
-        <p>This may indicate an issue with the Ren'Py web platform.</p>
-    </div>
-</body>
-</html>
-EOF
+            mkdir -p "$GITHUB_WORKSPACE/dist"
+            printf '%s\n' \
+              '<!DOCTYPE html>' \
+              '<html>' \
+              '<head>' \
+              '  <meta charset="utf-8">' \
+              '  <title>A.I. na lang!</title>' \
+              '  <style>' \
+              '    body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #000; }' \
+              '    .error { color: #f00; text-align: center; }' \
+              '  </style>' \
+              '</head>' \
+              '<body>' \
+              '  <div class="error">' \
+              '    <h1>Web Build Error</h1>' \
+              '    <p>The web build did not produce the expected files.</p>' \
+              '    <p>This may indicate an issue with the Ren'"'"'Py web platform.</p>' \
+              '  </div>' \
+              '</body>' \
+              '</html>' > "$GITHUB_WORKSPACE/dist/index.html"
           fi
 
           echo "=== Final dist/ contents ==="

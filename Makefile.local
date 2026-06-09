@@ -1,0 +1,130 @@
+# Local Ren'Py web build testing
+# Prerequisites: wget, unzip, (optional) Python 3 for serving
+
+SDK_VERSION := 8.3.7
+SDK_HOME := $(HOME)/renpy-sdk-local
+SDK := $(SDK_HOME)/renpy.sh
+WEB_PLATFORM := $(SDK_HOME)/web
+WORKSPACE := $(PWD)
+DIST_RAW := $(WORKSPACE)/dist-raw
+DIST := $(WORKSPACE)/dist
+
+.PHONY: help setup-sdk build serve clean
+
+help:
+	@echo "Local Ren'Py Web Build Testing"
+	@echo ""
+	@echo "Available targets:"
+	@echo "  make setup-sdk    - Download and extract Ren'Py SDK 8.3.7"
+	@echo "  make build        - Compile game bytecode + package for web"
+	@echo "  make serve        - Start a local web server on http://localhost:8000"
+	@echo "  make clean        - Remove dist-raw/ and dist/ directories"
+	@echo "  make full         - setup-sdk, build, and serve (all-in-one)"
+
+setup-sdk:
+	@echo "=== Setting up Ren'Py SDK 8.3.7 ==="
+	mkdir -p $(SDK_HOME)
+	@if [ ! -f "$(SDK)" ]; then \
+		echo "Downloading SDK..."; \
+		wget -q "https://www.renpy.org/dl/$(SDK_VERSION)/renpy-$(SDK_VERSION)-sdk.tar.bz2" -O "$(HOME)/renpy-sdk.tar.bz2"; \
+		tar -xjf "$(HOME)/renpy-sdk.tar.bz2" -C "$(HOME)/"; \
+		mv "$(HOME)/renpy-$(SDK_VERSION)-sdk" "$(SDK_HOME)"; \
+		chmod +x "$(SDK)"; \
+		rm "$(HOME)/renpy-sdk.tar.bz2"; \
+		echo "✓ SDK extracted to $(SDK_HOME)"; \
+	else \
+		echo "✓ SDK already exists at $(SDK_HOME)"; \
+	fi
+
+	@echo "Installing web platform..."
+	@if [ ! -d "$(WEB_PLATFORM)" ]; then \
+		echo "Downloading web platform..."; \
+		mkdir -p "$(WEB_PLATFORM)"; \
+		wget -q "https://www.renpy.org/dl/$(SDK_VERSION)/renpy-$(SDK_VERSION)-web.zip" -O "$(HOME)/renpy-web.zip"; \
+		unzip -q "$(HOME)/renpy-web.zip" -d "$(WEB_PLATFORM)"; \
+		SUBDIR=$$(find "$(WEB_PLATFORM)" -mindepth 1 -maxdepth 1 -type d | head -1); \
+		TOP_FILES=$$(find "$(WEB_PLATFORM)" -maxdepth 1 -type f | wc -l); \
+		if [ -n "$$SUBDIR" ] && [ "$$TOP_FILES" -eq 0 ]; then \
+			echo "Flattening web platform..."; \
+			mv "$$SUBDIR"/* "$(WEB_PLATFORM)/"; \
+			rmdir "$$SUBDIR" 2>/dev/null || true; \
+		fi; \
+		rm "$(HOME)/renpy-web.zip"; \
+		echo "✓ Web platform installed"; \
+	else \
+		echo "✓ Web platform already exists"; \
+	fi
+	@echo ""
+
+build: setup-sdk
+	@echo "=== Building web distribution ==="
+	rm -rf $(DIST_RAW) $(DIST)
+	mkdir -p $(DIST_RAW) $(DIST)
+
+	export RENPY_NO_STEAM=1; \
+	export SDL_VIDEODRIVER=dummy; \
+	export SDL_AUDIODRIVER=dummy; \
+	\
+	echo "Step 1: Compile game bytecode"; \
+	"$(SDK)" "$(WORKSPACE)" compile --no-archive || true; \
+	\
+	echo ""; \
+	echo "Step 2: Package for web using launcher distribute"; \
+	"$(SDK)" "$(SDK_HOME)/launcher" distribute "$(WORKSPACE)" --package web --destination "$(DIST_RAW)" || true; \
+	\
+	echo ""; \
+	echo "Step 3: Inspect build output"; \
+	echo "dist-raw contents:"; \
+	find "$(DIST_RAW)" -type f \( -name "*.html" -o -name "*.js" -o -name "*.zip" \) | head -20; \
+	\
+	echo ""; \
+	echo "Step 4: Extract web build to dist/"; \
+	WEB_ZIP=$$(find "$(DIST_RAW)" -name "*-web.zip" | head -1); \
+	if [ -n "$$WEB_ZIP" ]; then \
+		echo "Found web zip: $$WEB_ZIP"; \
+		unzip -q "$$WEB_ZIP" -d "$(DIST)"; \
+		if find "$(DIST)" -name "*.html" -o -name "*.js" | grep -q .; then \
+			echo "✓ Web build extracted successfully"; \
+			INDEX=$$(find "$(DIST)" -name "index.html" | head -1); \
+			if [ -n "$$INDEX" ] && [ "$$(dirname $$INDEX)" != "$(DIST)" ]; then \
+				echo "Flattening directory structure..."; \
+				cp -r "$$(dirname $$INDEX)"/* "$(DIST)/"; \
+			fi; \
+		fi; \
+	else \
+		echo "⚠ No web zip found in dist-raw"; \
+		echo "Checking for web platform files..."; \
+		if [ -f "$(WEB_PLATFORM)/index.html" ]; then \
+			echo "Using web platform fallback"; \
+			cp -r "$(WEB_PLATFORM)"/* "$(DIST)/" 2>/dev/null || true; \
+		fi; \
+	fi
+
+	@echo ""
+	@if [ -f "$(DIST)/index.html" ]; then \
+		echo "✓ Build complete! index.html found at $(DIST)/index.html"; \
+		echo ""; \
+		echo "To test locally, run:"; \
+		echo "  make serve"; \
+	else \
+		echo "✗ Build failed! index.html not found in dist/"; \
+		echo ""; \
+		echo "Checking full dist-raw structure:"; \
+		find "$(DIST_RAW)" -type f 2>/dev/null | head -30; \
+	fi
+
+serve:
+	@if [ ! -f "$(DIST)/index.html" ]; then \
+		echo "✗ dist/index.html not found. Run 'make build' first."; \
+		exit 1; \
+	fi
+	@echo "Starting web server on http://localhost:8000"
+	@echo "Press Ctrl+C to stop"
+	@echo ""
+	cd $(DIST) && python3 -m http.server 8000
+
+full: clean build serve
+
+clean:
+	rm -rf $(DIST_RAW) $(DIST)
+	@echo "Cleaned build artifacts"
