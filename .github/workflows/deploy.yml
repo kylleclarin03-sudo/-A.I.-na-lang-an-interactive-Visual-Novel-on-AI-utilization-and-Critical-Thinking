@@ -17,61 +17,64 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      RENPY_VERSION: "8.3.7"
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install system dependencies
+      - name: Install Xvfb and dependencies
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends \
-            libgl1 libgles2 p7zip-full wget unzip
+            xvfb libgl1 libgles2 p7zip-full wget
 
       - name: Download Ren'Py SDK
         run: |
           wget -q \
-            "https://www.renpy.org/dl/${RENPY_VERSION}/renpy-${RENPY_VERSION}-sdk.tar.bz2" \
+            "https://www.renpy.org/dl/8.3.7/renpy-8.3.7-sdk.tar.bz2" \
             -O renpy-sdk.tar.bz2
           tar -xjf renpy-sdk.tar.bz2
-          mv "renpy-${RENPY_VERSION}-sdk" "${HOME}/renpy-sdk"
-          chmod +x "${HOME}/renpy-sdk/renpy.sh"
-          echo "SDK ready at ${HOME}/renpy-sdk"
+          mv renpy-8.3.7-sdk "$HOME/renpy-sdk"
+          chmod +x "$HOME/renpy-sdk/renpy.sh"
 
       - name: Download Ren'Py Web Platform
         run: |
           wget -q \
-            "https://www.renpy.org/dl/${RENPY_VERSION}/renpy-${RENPY_VERSION}-web.zip" \
+            "https://www.renpy.org/dl/8.3.7/renpy-8.3.7-web.zip" \
             -O renpy-web.zip
-          unzip -q renpy-web.zip -d "${HOME}/renpy-sdk/"
-          echo "Web platform extracted"
-          ls "${HOME}/renpy-sdk/" | grep -i web || echo "No web folder found — check zip contents"
+          unzip -q renpy-web.zip -d "$HOME/renpy-sdk/"
+          echo "Web platform contents:"
+          ls "$HOME/renpy-sdk/" | grep -i web
 
-      - name: Build Web Distribution
+      - name: Build Web Distribution via Launcher
         run: |
           export RENPY_NO_STEAM=1
-          "${HOME}/renpy-sdk/renpy.sh" "$GITHUB_WORKSPACE" distribute --package web
-          echo "--- Build output ---"
-          find "$GITHUB_WORKSPACE" -maxdepth 3 \
-            \( -name "*-web" -type d \) -o \( -name "*.zip" -path "*web*" \) \
-            | head -20
+          Xvfb :99 -screen 0 1024x768x24 &
+          sleep 2
+          export DISPLAY=:99
+          "$HOME/renpy-sdk/renpy.sh" \
+            "$HOME/renpy-sdk/launcher" \
+            distribute \
+            "$GITHUB_WORKSPACE" \
+            --package web \
+            --destination "$GITHUB_WORKSPACE/dist-raw"
+          echo "--- Raw build output ---"
+          find "$GITHUB_WORKSPACE/dist-raw" -maxdepth 3 | head -30
 
-      - name: Collect dist files
+      - name: Collect web files into dist/
         run: |
-          WEB_DIR=$(find "$GITHUB_WORKSPACE" -maxdepth 3 -type d -name "*-web" | head -n 1)
-          if [ -z "$WEB_DIR" ]; then
-            echo "ERROR: No *-web directory found after build."
-            echo "Full directory listing:"
-            find "$GITHUB_WORKSPACE" -maxdepth 3 -type d
+          WEB_ZIP=$(find "$GITHUB_WORKSPACE/dist-raw" \
+            -name "*-web.zip" | head -n 1)
+          if [ -z "$WEB_ZIP" ]; then
+            echo "No web zip found. Listing dist-raw:"
+            find "$GITHUB_WORKSPACE/dist-raw" -maxdepth 4
             exit 1
           fi
-          echo "Found web build: $WEB_DIR"
+          echo "Found: $WEB_ZIP"
           mkdir -p "$GITHUB_WORKSPACE/dist"
-          cp -r "$WEB_DIR"/. "$GITHUB_WORKSPACE/dist/"
+          unzip -q "$WEB_ZIP" -d "$GITHUB_WORKSPACE/dist"
           echo "--- dist/ contents ---"
-          ls -lh "$GITHUB_WORKSPACE/dist/" | head -20
+          ls -lh "$GITHUB_WORKSPACE/dist/"
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
