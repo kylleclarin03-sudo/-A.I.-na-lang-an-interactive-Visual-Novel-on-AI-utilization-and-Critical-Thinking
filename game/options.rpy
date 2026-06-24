@@ -66,10 +66,11 @@ init python:
     config.thumbnail_width  = 1
     config.thumbnail_height = 1
 
-    ## Cap the per-channel audio cache.
-    ## Default is unlimited; 32 MB covers all OGG files for the chapter.
+    ## Cap the per-channel audio cache — disabled because config.audio_cache_size
+    ## is not available in Ren'Py 8.5.3.
+    ## Default is unlimited; Ren'Py manages audio memory internally on web.
     ## Lower if web build crashes on mid-range phones.
-    config.audio_cache_size = 32 * 1024 * 1024  # 32 MB
+    ## config.audio_cache_size = 32 * 1024 * 1024  # 32 MB — not a valid config var
 
     ## Prefer smaller image surfaces on web — Ren'Py will downscale if needed.
     ## Only enable if the build is crashing; comment out otherwise.
