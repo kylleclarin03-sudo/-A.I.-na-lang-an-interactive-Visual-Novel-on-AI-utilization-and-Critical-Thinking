@@ -608,9 +608,11 @@ screen main_menu():
             xalign 1.0
 
     ## Navigation buttons
+    $ _mm_xalign = 0.88 if not renpy.variant("small") else 0.5
+    $ _mm_yalign = 0.58 if not renpy.variant("small") else 0.72
     vbox:
-        xalign if renpy.variant("small") then 0.5 else 0.88
-        yalign if renpy.variant("small") then 0.72 else 0.58
+        xalign _mm_xalign
+        yalign _mm_yalign
         spacing 14
 
         textbutton "Simulan"       action Start()                 at menu_slide_in(0.10)
@@ -674,7 +676,6 @@ screen chapter_title(chapter_num, chapter_name, subtitle):
                     color "#ffffff"
                     xalign 0.5
                     bold True
-                    letter_spacing 3
 
             ## Chapter name
             text "[chapter_name]" at title_enter:
@@ -925,7 +926,6 @@ screen grade_results():
                         color "#58a6ff"
                         xalign 0.5
                         bold True
-                        letter_spacing 2
 
                     frame:
                         xfill True
