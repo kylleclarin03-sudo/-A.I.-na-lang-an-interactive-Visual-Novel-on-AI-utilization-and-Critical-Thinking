@@ -1081,6 +1081,7 @@ screen game_menu(title, scroll=None, yinitial=0.0):
         yfill True
         background Solid("#0d1117F4")
 
+        ## Fixed layout: header (3px + 82px) + viewport fills remaining
         vbox:
             xfill True
             yfill True
@@ -1120,30 +1121,37 @@ screen game_menu(title, scroll=None, yinitial=0.0):
                         text_xalign 0.5
                         text_yalign 0.5
 
-            if scroll == "viewport":
-                viewport:
-                    id "viewport"
-                    xfill True
-                    yfill True
-                    yinitial yinitial
-                    scrollbars "vertical"
-                    mousewheel True
-                    draggable True
-                    transclude
+            ## Content area — fills remaining space in the vbox
+            frame:
+                xfill True
+                ysize 0  ## zero = take remaining space in yfill vbox
+                background None
+                padding (0, 0)
 
-            elif scroll == "vpgrid":
-                vpgrid:
-                    id "viewport"
-                    cols 1
-                    xfill True
-                    yinitial yinitial
-                    scrollbars "vertical"
-                    mousewheel True
-                    draggable True
-                    transclude
+                if scroll == "viewport":
+                    viewport:
+                        id "viewport"
+                        xfill True
+                        yfill True
+                        yinitial yinitial
+                        scrollbars "vertical"
+                        mousewheel True
+                        draggable True
+                        transclude
 
-            else:
-                transclude
+                elif scroll == "vpgrid":
+                    vpgrid:
+                        id "viewport"
+                        cols 1
+                        xfill True
+                        yinitial yinitial
+                        scrollbars "vertical"
+                        mousewheel True
+                        draggable True
+                        transclude
+
+                else:
+                    transclude
 
 style game_menu_frame:
     background Solid("#0d1117F4")
