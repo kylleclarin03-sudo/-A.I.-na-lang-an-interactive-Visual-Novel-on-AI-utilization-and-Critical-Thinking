@@ -2,14 +2,15 @@
 ## Chapter 1, "Day One Vibes" (Week 1)
 
 label chapter1:
-    show screen hud
     call screen chapter_title("1", "Day One na?", "Week 1, 'Sana ol, may motivation.'")
     $ day_label = "Day 1, Morning"
     $ current_week = 1
 
 ## ── SCENE 1-1: First Day, Classroom ──────────────────────────────────────
     scene bg_classroom with dissolve
-    $ safe_play("music", "audio/bgm/bgm_classroom.ogg", loop=True)
+    $ safe_play("music", "audio/bgm/bgm_campus.ogg", loop=True)
+    $ show_hud = False
+
 
     narrator "First day of the semester. You know the drill: walk in, find a seat that's not sa harap, but not masyado sa likod (nobody wants to be the taga-sagot ng katok sa pinto)."
     narrator "You settle somewhere in the middle. The sweet spot. The 'pwede na' zone."
@@ -104,8 +105,10 @@ label chapter1:
 
     ms_iva "Sa katapusan ng semester na ito, inaasahan ko na masasagot ninyo ang tanong na iyon. Hindi para sa akin. Para sa inyo."
     hide ms_iva with dissolve
-    hide carl with dissolve
-    hide carly with dissolve
+    if player_bestfriend == "carl":
+        hide carl with dissolve
+    else:
+        hide carly with dissolve
     hide gabby with dissolve
     narrator "Class continues, pero hindi mo na masyadong naririnig. Paulit-ulit ang tanong ni Ms. Iva sa isip mo. What does it mean? 'Kailan nagiging crutch ang isang tool?'"
 
@@ -116,12 +119,12 @@ label chapter1:
     $ day_label = "Day 1, Hapon"
 
     narrator "Nahanap ng grupo ang mesa. Tray ng kanin, ulam, malamig na inumin. Ang universal na college meal."
-    show gabby normal at left with dissolve
+    show gabby normal at enter_from_left
     if player_bestfriend == "carl":
-        show carl normal at right with dissolve
+        show carl normal at right_idle
     else:
-        show carly normal at right with dissolve
-    show kent normal at center with dissolve
+        show carly normal at right_idle
+    show kent normal at center_idle
 
     gabby "Hoy, 'yung sinabi ni Ms. Iva, grabe ang O.A. Obvious naman kung sino ang tinutukoy nun."
     kent "Actually, tinutukoy niya ang isang documented na phenomenon sa cognitive science, skill atrophy. Kapag paulit-ulit mong inexternalize ang isang cognitive task sa isang tool, ang neural pathway na nag-ha-handle nun ay,"
@@ -152,8 +155,10 @@ label chapter1:
     gabby "Uy, ang seryoso naman ang aura nyo! Kain na at mag-usap tayo ng masaya! May bagong season nga pala! G na!"
     narrator "(Nagbago ang mood. Tawanan. Lumipas ang sandali. Pero hindi ka nito iniwan.)"
     hide gabby with dissolve
-    hide carl with dissolve
-    hide carly with dissolve
+    if player_bestfriend == "carl":
+        hide carl with dissolve
+    else:
+        hide carly with dissolve
     hide kent with dissolve
 
     ## ── SCENE 1-3: First assignment dropped ─────────────────────────────────
@@ -180,6 +185,7 @@ label chapter1:
         carly "Ikaw? Paano mo gagawin?"
 
     ## CHOICE NODE 1-A: How to handle first programming assignment
+    $ show_hud = True
     menu:
         "Gagawin ko. Matututo naman tayo dito.":
             $ ct_change(8)
@@ -223,6 +229,8 @@ label chapter1:
 
     hide gabby with dissolve
     hide kent with dissolve
-    hide carl with dissolve
-    hide carly with dissolve
+    if player_bestfriend == "carl":
+        hide carl with dissolve
+    else:
+        hide carly with dissolve
     return

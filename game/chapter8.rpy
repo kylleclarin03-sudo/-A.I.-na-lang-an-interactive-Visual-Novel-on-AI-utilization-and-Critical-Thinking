@@ -54,7 +54,7 @@ label chapter8:
     $ safe_play("music", "audio/bgm/bgm_tension.ogg", loop=True)
     $ day_label = "Week 8, Networking Finals"
 
-    show mr_earns normal at center with dissolve
+    show mr_earns normal at enter_center_rise
     mr_earns "Magsimula na. Dalawang oras. Walang phone. Walang kahit ano."
     narrator "(Binaliktad mo ang papel. Ang unang tanong, subnetting. Alam mo ito.)"
     narrator "(Hindi dahil kinopya mo mula sa AI. Kundi dahil ginawa mo sa sarili mo, nang paulit-ulit, hanggang sumama sa iyo.)"
@@ -116,7 +116,7 @@ label chapter8:
     $ safe_play("music", "audio/bgm/bgm_tension.ogg", loop=True)
     $ day_label = "Week 8, Cybersecurity Finals"
 
-    show ms_iva normal at center with dissolve
+    show ms_iva normal at enter_center_rise
     ms_iva "Ang huling exam. May MCQ portion at may essay."
     ms_iva "Ang essay prompt, tandaan ninyo: ipaliwanag ang cognitive debt sa konteksto ng AI use sa edukasyon. At isang hakbang para gamitin ang AI nang etikal."
     ms_iva "Actual citations kung may ci-cite, verified mula sa tunay na batas. Wala akong tinatanggap na AI-generated references."

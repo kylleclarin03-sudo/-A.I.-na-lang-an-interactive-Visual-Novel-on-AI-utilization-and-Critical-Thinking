@@ -158,8 +158,10 @@ label ending_good_solid:
     else:
         mc_f "Hindi perpekto ang lahat. Pero lahat ay earned. Lahat, sarili ko."
 
-    hide carl with dissolve
-    hide carly with dissolve
+    if player_bestfriend == "carl":
+        hide carl with dissolve
+    else:
+        hide carly with dissolve
 
     scene black with dissolve
     narrator "Hindi perpekto. Pero earned."

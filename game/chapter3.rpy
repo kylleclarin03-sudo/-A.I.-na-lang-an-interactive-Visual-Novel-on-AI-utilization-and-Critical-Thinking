@@ -112,7 +112,7 @@ label chapter3_debug_q3_wrong:
 label chapter3_debug_q4:
     show screen minigame(
         "Programming, Python Debug Challenge (4/5)",
-        "What error will this code produce?\n\nnumbers = [10, 20, 30]\nprint(numbers[3])",
+        "What error will this code produce?\n\nnumbers = [[10, 20, 30]]\nprint(numbers[[3]])",
         [
             "A. IndexError: list index out of range",
             "B. KeyError: key not found",

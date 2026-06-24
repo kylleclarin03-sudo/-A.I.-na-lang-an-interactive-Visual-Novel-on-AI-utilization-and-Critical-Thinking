@@ -237,16 +237,12 @@ label chapter2_effort_q5_wrong:
 ## ── ROUTE B: AI Route ────────────────────────────────────────────────────────
 label chapter2_ai_route:
     scene bg_bedroom with dissolve
-    narrator "(Alas singko ng umaga. Ang mata mo ay tila dinikdik sa asin at pinirito sa mantika, ganun kasara.)"
-    narrator "(Ang Packet Tracer ay nakabukas. Ang mukha mo ay sumasalamin sa screen: isang tunay na IT student na hindi naka-kuha ng tamang tulog.)"
-    narrator "(I-open mo ang AI app. I-type mo ang buong instructions ng activity. Parang may binibigyan ng utos na intern.)"
-    narrator "AI: 'Here is the complete configuration for your VLAN topology.'"
+    ai_voice "Here is the complete configuration for your VLAN topology."
     narrator "(Tumingin ka. Kumpleto. Perpekto. Maganda pa sa pagkakagawa ng iyong magiging thesis, kung gagawin mo man 'yun.)"
     narrator "(Isang problema lang: wala kang maintindihan kahit isang hakbang nito.)"
     narrator "(Siya nga pala: Tatlong minuto lang ginugol mo dito. Tatlo.)"
     narrator "(Isasara mo na ang AI app. Ngunit bago mo pa magawa...)"
-    narrator "AI: 'Would you like me to explain how this configuration works step by step?'"
-    narrator "(Titig ka sa screen.)"
+    ai_voice "Would you like me to explain how this configuration works step by step?"
     if player_gender == "male":
         mc_m "(Sa isip) Gusto ko ba? Oo. Pero kung ie-explain pa, baka abutin ng isang oras 'to."
     else:
@@ -260,7 +256,7 @@ label chapter2_ai_route:
     $ safe_play("music", "audio/bgm/bgm_tension.ogg", loop=True)
     $ day_label = "Week 2, Submission"
 
-    show mr_earns normal at center with dissolve
+    show mr_earns normal at enter_center_rise
     mr_earns "VLAN activity. Checked."
     narrator "(Tumayo siya sa harap ng klase, hawak ang isang printout — parang may dalang death note.)"
     mr_earns "May dalawang topology na may parehong interface numbering error. Pareho. Hindi nagkataon."

@@ -1,0 +1,10 @@
+﻿I'm sorry, but errors were detected in your script. Please correct the
+errors listed below, and try again.
+
+
+File "game/screens.rpy", line 357: 'outlinectext' is not a keyword argument or valid child of the text statement.
+    text "A.I. NA LANG!" size 110 color "#ffffff" bold True outlinectext "A.I. NA LANG!" size 110 color "#ffffff" bold True outlines [(3, "#1f6feb", 0, 0)] xalign 1.0olor "#1f6feb" outlines [(3, "#1f6feb", 0, 0)] xalign 1.0
+                                                                        ^
+
+Ren'Py Version: Ren'Py 8.5.3.26051504
+Thu Jun 11 13:29:55 2026

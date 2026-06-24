@@ -13,7 +13,7 @@ label chapter6:
     narrator "(Bago magsimula ang klase. Tinatawag ka ni Ms. Iva.)"
     narrator "(Lahat ay nakapansin. Nagtataka. Ikaw lang ang hindi nagtataka, alam mo na kung bakit.)"
 
-    show ms_iva normal at center with dissolve
+    show ms_iva normal at enter_center_rise
     ms_iva "Ang essay mo sa cybersecurity paper, may nahanap akong citation. RA 10173, Section 4, Subsection g, Paragraph 3."
     ms_iva "Binuksan ko ang textbook. Walang ganoon na provision."
     narrator "(Tahimik bigla ang hallway.)"
@@ -49,7 +49,7 @@ label chapter6:
                 mc_m "N-Nabasa ko po 'yun, Ma'am. Baka nagkamali lang po ako ng pag-cite ng section number."
             else:
                 mc_f "N-Nabasa ko po siya, Ma'am. Siguro nagkamali lang ako ng format ng citation."
-            show ms_iva disappointed at center with dissolve
+            show ms_iva disappointed at enter_center_rise
             ms_iva "..."
             ms_iva "Sineseryoso ko ang academic integrity sa aking klase. At sineseryoso ko rin ang bawat estudyante."
             ms_iva "Ibig sabihin: alam ko kung kailan nagsisinungaling ang isang estudyante sa harap ko."

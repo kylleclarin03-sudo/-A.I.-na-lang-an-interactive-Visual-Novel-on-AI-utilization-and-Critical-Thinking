@@ -75,7 +75,7 @@ label chapter4_late_scene:
     $ safe_play("music", "audio/bgm/bgm_tension.ogg", loop=True)
     $ day_label = "Week 4, Exam Day (Late)"
 
-    show mr_earns normal at center with dissolve
+    show mr_earns normal at enter_center_rise
     mr_earns "Twelve minutes late."
     narrator "(Wala siyang ibang sinabi. Pinagmasdan ka niya habang umuupo ka.)"
     mr_earns "Exam na. Walang phone."
@@ -88,7 +88,7 @@ label chapter4_exam:
     scene bg_classroom with dissolve
     $ safe_play("music", "audio/bgm/bgm_tension.ogg", loop=True)
 
-    show mr_earns normal at center with dissolve
+    show mr_earns normal at enter_center_rise
     mr_earns "Phones in your bags. Bags in front. Begin."
     hide mr_earns with dissolve
 

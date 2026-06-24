@@ -156,7 +156,7 @@ label chapter5:
 
     narrator "(The final class of the week. Ms. Iva stands at the podium, a stack of papers in her hand. She doesn't look happy.)"
 
-    show ms_iva normal at center with dissolve
+    show ms_iva normal at enter_center_rise
     ms_iva "Before you leave, one more thing. The final paper I'll be assigning has an essay component."
     ms_iva "The prompt: explain cognitive debt in the context of AI use in education. Then provide one concrete step an IT student can take to use AI ethically."
     ms_iva "You may cite RA 10173 or RA 10175. But cite them correctly. Citations that cannot be verified in the actual text of the law will be flagged. I've already caught three students doing that in the midterm essay."
@@ -168,4 +168,4 @@ label chapter5:
     ms_iva "Sleep well. Study well. Wake up your own brain before you ask a machine to think for you."
     narrator "(The room is silent as she walks out. You're left with your notes, your conscience, and two weeks until finals.)"
     hide ms_iva with dissolve
-return
+    return

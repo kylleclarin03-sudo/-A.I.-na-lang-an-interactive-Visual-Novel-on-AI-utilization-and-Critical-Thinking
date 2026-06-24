@@ -19,6 +19,9 @@ define config.main_menu_music = "audio/bgm/bgm_menu.ogg"
 ## Persistent saves survive cache clears on IndexedDB (web).
 define config.save_directory = "ai_na_lang-1.0.0"
 
+## Keep up to 250 dialogue lines in the history screen.
+define config.history_length = 250
+
 ## Taglish, no separate translation layer needed.
 define config.language = None
 
@@ -51,3 +54,27 @@ init python:
             renpy.music.stop(channel=channel, fadeout=1.0)
         except Exception:
             pass
+
+    ## ── WEB MEMORY OPTIMISATION ────────────────────────────────────────────
+    ## Limit rollback history to reduce IndexedDB / WASM heap pressure.
+    ## 120 steps ≈ about 1 full chapter's worth of undo.
+    config.rollback_length = 120
+
+    ## Disable Ren'Py's automatic thumbnail generation for save slots.
+    ## Thumbnails cost ~2 MB each; with 80 slots that's 160 MB wasted.
+    ## We use text-only slot display (already done in slot_grid screen).
+    config.thumbnail_width  = 1
+    config.thumbnail_height = 1
+
+    ## Cap the per-channel audio cache.
+    ## Default is unlimited; 32 MB covers all OGG files for the chapter.
+    ## Lower if web build crashes on mid-range phones.
+    config.audio_cache_size = 32 * 1024 * 1024  # 32 MB
+
+    ## Prefer smaller image surfaces on web — Ren'Py will downscale if needed.
+    ## Only enable if the build is crashing; comment out otherwise.
+    ## config.image_cache_size = 64 * 1024 * 1024  # 64 MB — adjust as needed
+
+    ## Web: disable voice channel to reclaim one audio context.
+    if renpy.variant("web"):
+        config.has_voice = False

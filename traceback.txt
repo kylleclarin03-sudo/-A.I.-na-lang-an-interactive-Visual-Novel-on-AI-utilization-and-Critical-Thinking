@@ -1,0 +1,133 @@
+﻿I'm sorry, but an uncaught exception occurred.
+
+While running game code:
+  File "renpy/display/render.pyx", line 494, in renpy.display.render.render_screen
+  File "renpy/display/render.pyx", line 267, in renpy.display.render.render
+  File "renpy/display/render.pyx", line 170, in renpy.display.render.render
+  File "renpy/display/render.pyx", line 267, in renpy.display.render.render
+  File "renpy/display/render.pyx", line 170, in renpy.display.render.render
+  File "renpy/display/render.pyx", line 267, in renpy.display.render.render
+  File "renpy/display/render.pyx", line 170, in renpy.display.render.render
+  File "renpy/display/render.pyx", line 267, in renpy.display.render.render
+  File "renpy/display/render.pyx", line 170, in renpy.display.render.render
+  File "renpy/display/render.pyx", line 267, in renpy.display.render.render
+  File "renpy/display/render.pyx", line 170, in renpy.display.render.render
+  File "renpy/display/render.pyx", line 267, in renpy.display.render.render
+  File "renpy/display/accelerator.pyx", line 1020, in renpy.display.accelerator.RenderTransform.render
+  File "renpy/display/accelerator.pyx", line 439, in renpy.display.accelerator.RenderTransform.render_child
+  File "renpy/display/render.pyx", line 267, in renpy.display.render.render
+  File "renpy/display/render.pyx", line 170, in renpy.display.render.render
+  File "renpy/display/render.pyx", line 267, in renpy.display.render.render
+Exception: Could not find font 'gui/fonts/rajdhani_bold.ttf'.
+
+-- Full Traceback ------------------------------------------------------------
+
+Traceback (most recent call last):
+  File "renpy/common/_layout/screen_main_menu.rpym", line 28, in script
+    python hide:
+  File "renpy/ast.py", line 1193, in execute
+    renpy.python.py_exec_bytecode(self.code.bytecode, self.hide, store=self.store)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "renpy/python.py", line 1276, in py_exec_bytecode
+    exec(bytecode, globals, locals)
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "renpy/common/_layout/screen_main_menu.rpym", line 28, in <module>
+    python hide:
+  File "renpy/common/_layout/screen_main_menu.rpym", line 35, in _execute_python_hide
+    ui.interact()
+    ~~~~~~~~~~~^^
+  File "renpy/ui.py", line 306, in interact
+    rv = renpy.game.interface.interact(roll_forward=roll_forward, **kwargs)
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "renpy/display/core.py", line 2163, in interact
+    repeat, rv = self.interact_core(
+                 ~~~~~~~~~~~~~~~~~~^
+        preloads=preloads,
+        ^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    )
+    ^
+  File "renpy/display/core.py", line 2842, in interact_core
+    self.draw_screen(root_widget, fullscreen_video, (not fullscreen_video) or video_frame_drawn)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "renpy/display/core.py", line 1279, in draw_screen
+    surftree = renpy.display.render.render_screen(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        root_widget,
+        ^^^^^^^^^^^^
+        renpy.config.screen_width,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+        renpy.config.screen_height,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "renpy/display/render.pyx", line 494, in renpy.display.render.render_screen
+  File "renpy/display/render.pyx", line 267, in renpy.display.render.render
+  File "renpy/display/layout.py", line 896, in render
+    surf = render(child, width, height, cst, cat)
+           ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "renpy/display/render.pyx", line 170, in renpy.display.render.render
+  File "renpy/display/render.pyx", line 267, in renpy.display.render.render
+  File "renpy/display/layout.py", line 896, in render
+    surf = render(child, width, height, cst, cat)
+           ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "renpy/display/render.pyx", line 170, in renpy.display.render.render
+  File "renpy/display/render.pyx", line 267, in renpy.display.render.render
+  File "renpy/display/layout.py", line 896, in render
+    surf = render(child, width, height, cst, cat)
+           ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "renpy/display/render.pyx", line 170, in renpy.display.render.render
+  File "renpy/display/render.pyx", line 267, in renpy.display.render.render
+  File "renpy/display/screen.py", line 767, in render
+    child = renpy.display.render.render(self.child, w, h, st, at)
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "renpy/display/render.pyx", line 170, in renpy.display.render.render
+  File "renpy/display/render.pyx", line 267, in renpy.display.render.render
+  File "renpy/display/layout.py", line 896, in render
+    surf = render(child, width, height, cst, cat)
+           ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "renpy/display/render.pyx", line 170, in renpy.display.render.render
+  File "renpy/display/render.pyx", line 267, in renpy.display.render.render
+  File "renpy/display/transform.py", line 1093, in render
+    return RenderTransform(self).render(width, height, st, at)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "renpy/display/accelerator.pyx", line 1020, in renpy.display.accelerator.RenderTransform.render
+  File "renpy/display/accelerator.pyx", line 439, in renpy.display.accelerator.RenderTransform.render_child
+  File "renpy/display/render.pyx", line 267, in renpy.display.render.render
+  File "renpy/display/layout.py", line 1159, in render
+    surf = render(d, width - x, rh, cst, cat)
+           ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "renpy/display/render.pyx", line 170, in renpy.display.render.render
+  File "renpy/display/render.pyx", line 267, in renpy.display.render.render
+  File "renpy/text/text.py", line 2768, in render
+    virtual_layout = Layout(self, width, height, renders, drawable_res=False, size_only=True)
+                     ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "renpy/text/text.py", line 837, in __init__
+    seg_glyphs, rtl = self.glyphs_paragraph(p, order)
+                      ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "renpy/text/text.py", line 1701, in glyphs_paragraph
+    rv.append((ts, ts.glyphs(s[offset:], self, l)))
+                   ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^  
+  File "renpy/text/text.py", line 371, in glyphs
+    fo = font.get_font(
+         ~~~~~~~~~~~~~^
+        self.font,
+        ^^^^^^^^^^
+    ...<11 lines>...
+        self.features,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "renpy/text/font.py", line 750, in get_font
+    face = load_face(fn, shaper)
+           ~~~~~~~~~^^^^^^^^^^^^
+  File "renpy/text/font.py", line 668, in load_face
+    raise Exception("Could not find font {0!r}.".format(orig_fn))
+Exception: Could not find font 'gui/fonts/rajdhani_bold.ttf'.
+
+Windows-11-10.0.26200-SP0 AMD64
+Ren'Py 8.5.3.26051504
+A.I. na lang! 1.0.0
+Thu Jun 11 13:34:41 2026

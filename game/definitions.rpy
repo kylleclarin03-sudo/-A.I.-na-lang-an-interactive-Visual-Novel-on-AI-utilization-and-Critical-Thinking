@@ -14,6 +14,7 @@ default player_bestfriend    = "carl"   # "carl" or "carly", set in prologue.
 default player_name          = "Alex"   # Overwritten by name input in prologue.
 default current_week         = 1        # Narrative week tracker (1–8).
 default day_label            = "Day 1, Umaga"
+default show_hud             = False    # Controlled manually; overlay re-shows every frame.
 
 # ── HELPER FUNCTIONS ─────────────────────────────────────────────────────────
 init python:
@@ -76,59 +77,92 @@ init python:
         if all_pass:
             return "ending_good_solid"
         return "ending_bad"
-
-# ── CHARACTER DEFINITIONS ────────────────────────────────────────────────────
+## ── STUDENTS ──────────────────────────────────────────────────────────────────
+## what_slow_sound: sfx_blip_warm.ogg - organic, tired, human chatter.
 
 define mc_m = Character("[player_name]",
     color="#79c0ff", what_color="#e6edf3",
-    window_background=Solid("#161b22CC"))
+    window_background=Solid("#161b22CC"),
+    what_slow_sound="audio/sfx/blip/sfx_blip_warm.ogg")
 
 define mc_f = Character("[player_name]",
     color="#a5d6ff", what_color="#e6edf3",
-    window_background=Solid("#161b22CC"))
+    window_background=Solid("#161b22CC"),
+    what_slow_sound="audio/sfx/blip/sfx_blip_warm.ogg")
 
 define carl = Character("Carl",
     color="#7ee787", what_color="#e6edf3",
-    window_background=Solid("#161b22CC"))
+    window_background=Solid("#161b22CC"),
+    what_slow_sound="audio/sfx/blip/sfx_blip_warm.ogg")
 
 define carly = Character("Carly",
     color="#a5d6ff", what_color="#e6edf3",
-    window_background=Solid("#161b22CC"))
+    window_background=Solid("#161b22CC"),
+    what_slow_sound="audio/sfx/blip/sfx_blip_warm.ogg")
 
 define gabby = Character("Gabby",
     color="#f78166", what_color="#e6edf3",
-    window_background=Solid("#161b22CC"))
+    window_background=Solid("#161b22CC"),
+    what_slow_sound="audio/sfx/blip/sfx_blip_warm.ogg")
+
+## ── MEASURED CHARACTERS ───────────────────────────────────────────────────────
+## what_slow_sound: sfx_blip_calm.ogg - deliberate, composed, lower pitch.
 
 define kent = Character("Kent",
     color="#d2a8ff", what_color="#e6edf3",
-    window_background=Solid("#161b22CC"))
+    window_background=Solid("#161b22CC"),
+    what_slow_sound="audio/sfx/blip/sfx_blip_calm.ogg")
 
 define rey = Character("Rey",
     color="#ffa657", what_color="#e6edf3",
-    window_background=Solid("#161b22CC"))
+    window_background=Solid("#161b22CC"),
+    what_slow_sound="audio/sfx/blip/sfx_blip_calm.ogg")
+
+## ── PROFESSORS ────────────────────────────────────────────────────────────────
+## what_slow_sound: sfx_blip_calm.ogg - same class as kent/rey. Authoritative.
 
 define mr_earns = Character("Mr. Earns",
     color="#e3b341", what_color="#e6edf3",
-    window_background=Solid("#1a1a22CC"))
+    window_background=Solid("#1a1a22CC"),
+    what_slow_sound="audio/sfx/blip/sfx_blip_calm.ogg")
 
 define mr_kai = Character("Mr. Kai",
     color="#ff7b72", what_color="#e6edf3",
-    window_background=Solid("#1a1a22CC"))
+    window_background=Solid("#1a1a22CC"),
+    what_slow_sound="audio/sfx/blip/sfx_blip_calm.ogg")
 
 define ms_iva = Character("Ms. Iva",
     color="#56d364", what_color="#e6edf3",
-    window_background=Solid("#1a1a22CC"))
+    window_background=Solid("#1a1a22CC"),
+    what_slow_sound="audio/sfx/blip/sfx_blip_calm.ogg")
+
+## ── NARRATOR + SYSTEM ────────────────────────────────────────────────────────
+## narrator: NO blip. Internal italicized thoughts must stay silent.
+## sys_voice: digital blip. This is the "game system" speaking, not a human.
+## groupchat: reuses sfx_chat.ogg which already exists. Zero new asset needed.
 
 define narrator = Character(None,
     what_italic=True, what_color="#c9d1d9",
     window_background=Solid("#0d1117CC"))
 
 define sys_voice = Character(None,
-    what_color="#8b949e", what_italic=True)
+    what_color="#8b949e", what_italic=True,
+    what_slow_sound="audio/sfx/blip/sfx_blip_digital.ogg")
 
 define groupchat = Character("GROUP CHAT",
     color="#8b949e", what_color="#c9d1d9",
-    what_italic=True, window_background=Solid("#21262DCC"))
+    what_italic=True, window_background=Solid("#21262DCC"),
+    what_slow_sound="audio/sfx/sfx_chat.ogg")
+
+## ── AI VOICE (NEW CHARACTER) ──────────────────────────────────────────────────
+## Replaces narrator-as-AI in chapter2 and script.rpy shared labels.
+## Cold, sterile, digital. No warmth in the blip. No warmth in the text.
+
+define ai_voice = Character("AI",
+    color="#58a6ff", what_color="#c9d1d9",
+    what_italic=False,
+    window_background=Solid("#0d1117CC"),
+    what_slow_sound="audio/sfx/blip/sfx_blip_digital.ogg")
 
 # ── IMAGE DECLARATIONS ───────────────────────────────────────────────────────
 
