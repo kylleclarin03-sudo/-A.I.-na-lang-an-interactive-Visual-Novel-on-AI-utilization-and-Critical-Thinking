@@ -1076,38 +1076,44 @@ screen game_menu(title, scroll=None, yinitial=0.0):
     style_prefix "game_menu"
     tag menu
 
+    ## Full-screen dark backdrop
     frame:
         xfill True
         yfill True
         background Solid("#0d1117F4")
 
-        ## Fixed layout: header (3px + 82px) + viewport fills remaining
+        ## Vertical layout: stripe + header + content
         vbox:
             xfill True
             yfill True
             spacing 0
 
-            ## Header
+            ## Blue stripe at very top (horizontal, not vertical)
             frame:
                 xfill True
                 ysize 3
                 background Solid("#1f6feb")
 
+            ## Header bar
             frame:
                 xfill True
                 ysize 82
                 background Solid("#161b22")
                 padding (30, 0)
+
                 hbox:
                     xfill True
                     yalign 0.5
                     spacing 20
+
                     text title:
                         size 34
                         color "#f0f6fc"
                         bold True
                         yalign 0.5
+
                     null width True
+
                     textbutton "Bumalik":
                         action Return()
                         yalign 0.5
@@ -1121,37 +1127,31 @@ screen game_menu(title, scroll=None, yinitial=0.0):
                         text_xalign 0.5
                         text_yalign 0.5
 
-            ## Content area — fills remaining space in the vbox
-            frame:
-                xfill True
-                ysize 0  ## zero = take remaining space in yfill vbox
-                background None
-                padding (0, 0)
-
-                if scroll == "viewport":
-                    viewport:
-                        id "viewport"
-                        xfill True
-                        yfill True
-                        yinitial yinitial
-                        scrollbars "vertical"
-                        mousewheel True
-                        draggable True
-                        transclude
-
-                elif scroll == "vpgrid":
-                    vpgrid:
-                        id "viewport"
-                        cols 1
-                        xfill True
-                        yinitial yinitial
-                        scrollbars "vertical"
-                        mousewheel True
-                        draggable True
-                        transclude
-
-                else:
+            ## Content fills the rest
+            if scroll == "viewport":
+                viewport:
+                    id "viewport"
+                    xfill True
+                    yfill True
+                    yinitial yinitial
+                    scrollbars "vertical"
+                    mousewheel True
+                    draggable True
                     transclude
+
+            elif scroll == "vpgrid":
+                vpgrid:
+                    id "viewport"
+                    cols 1
+                    xfill True
+                    yinitial yinitial
+                    scrollbars "vertical"
+                    mousewheel True
+                    draggable True
+                    transclude
+
+            else:
+                transclude
 
 style game_menu_frame:
     background Solid("#0d1117F4")
