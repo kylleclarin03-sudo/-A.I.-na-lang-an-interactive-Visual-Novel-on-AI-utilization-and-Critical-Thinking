@@ -4,23 +4,30 @@
 ## Web-safe: no image files required. Pure Ren'Py displayables.
 
 ################################################################################
-## UTILITY: CARD BACKGROUND BUILDER
-## Produces a two-tone card: 3-px blue stripe on top, dark content area below.
-## Used by dialogue box, chapter title, minigame, and grade results.
+## ATL TRANSFORMS USED BY SCREENS
+## Defined here because Ren'Py loads screens.rpy before transforms.rpy
+## alphabetically. These are also in game/transforms.rpy for chapter files.
 ################################################################################
-init python:
-    def card_bg(stripe_color="#1f6feb", body_color="#0d1117F4",
-                stripe_h=3, xpad=0, ypad=0):
-        """
-        Returns a LiveComposite that draws a colored stripe + dark body.
-        NOT used directly in screens — the screens build this structure
-        using screen-language vbox/frame stacks for layout flexibility.
-        This function is here as a reference for any init python usage.
-        """
-        return Fixed(
-            Frame(Solid(stripe_color), 0, 0),
-            Frame(Solid(body_color), 0, stripe_h)
-        )
+
+transform title_pulse:
+    alpha 0.75
+    easein 2.8 alpha 1.0
+    easeout 2.8 alpha 0.75
+    repeat
+
+transform menu_slide_in(delay_time):
+    xoffset 40
+    alpha 0.0
+    pause delay_time
+    ease 0.55 xoffset 0 alpha 1.0
+
+transform title_enter:
+    yoffset -20 alpha 0.0
+    ease 0.50 yoffset 0 alpha 1.0
+
+transform subtitle_enter:
+    yoffset 10 alpha 0.0
+    ease 0.55 yoffset 0 alpha 1.0
 
 ################################################################################
 ## CHOICE SCREEN
